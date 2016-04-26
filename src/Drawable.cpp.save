@@ -1,0 +1,27 @@
+#include "../h/Drawable.h"
+
+namespace widap
+{
+
+using class Drawable;
+
+void setDrawClr(ClrBGR in)
+{
+	drawClr=in;
+}
+
+void setDrawVals(ClrBGR inClr, double inAlpha)
+{
+	drawClr=inClr;
+	drawAlpha=inAlpha;
+}
+
+void rect(V2d low, V2d hgh, ClrBGR inClr, double inAlpha)
+{
+	drawClr=inClr;
+	drawAlpha=inAlpha;
+}
+
+void rect(V2d low, V2d hgh, ClrBGR inClr);
+
+}

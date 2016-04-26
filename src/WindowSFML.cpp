@@ -1,0 +1,389 @@
+#include "../h/WindowSFML.h"
+#include "../h/SimpMath.h"
+
+namespace widap
+{
+
+bool WindowSFML::firstInstance=1;
+sf::Font WindowSFML::font;
+char WindowSFML::key2char[127];
+
+
+WindowSFML::WindowSFML()
+{
+	//constructor
+	
+	drawClr=clr(0, 0, 0);
+	drawAlpha=1;
+	data=0;
+	
+	if (firstInstance)
+	{
+		if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf"))
+			//if (!font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMono.ttf"))
+		{
+			err << "font failed to load" << err;
+		}
+		
+		int i;
+		
+		for (i=0; i<127; ++i)
+		{
+			key2char[i]=1;
+		}
+		
+		for (i=sf::Keyboard::A; i<=sf::Keyboard::Z; ++i) //letters
+			key2char[i]=i-sf::Keyboard::A+int('A');
+			
+		for (i=sf::Keyboard::Num0; i<=sf::Keyboard::Num9; ++i) //number row
+			key2char[i]=i-sf::Keyboard::Num0+int('0');
+			
+		for (i=sf::Keyboard::Numpad0; i<=sf::Keyboard::Numpad9; ++i) //number pad
+			key2char[i]=i-sf::Keyboard::Numpad0+int('0');
+			
+		key2char[int(sf::Keyboard::Space)]=' ';
+		key2char[int(sf::Keyboard::Period)]='.';
+		key2char[int(sf::Keyboard::Comma)]=',';
+		key2char[int(sf::Keyboard::BackSlash)]='\\';
+		key2char[int(sf::Keyboard::Slash)]='/';
+		key2char[int(sf::Keyboard::LBracket)]='[';
+		key2char[int(sf::Keyboard::RBracket)]=']';
+		key2char[int(sf::Keyboard::Quote)]='\'';
+		key2char[int(sf::Keyboard::SemiColon)]=';';
+		key2char[int(sf::Keyboard::Delete)]=127;
+		key2char[int(sf::Keyboard::BackSpace)]='\b';
+		key2char[int(sf::Keyboard::Return)]='\n';
+		key2char[int(sf::Keyboard::Tab)]='\t';
+		key2char[int(sf::Keyboard::Equal)]='=';
+		key2char[int(sf::Keyboard::Dash)]='-';
+		key2char[int(sf::Keyboard::Left)]='a'; //I use lower key2char[int(wasd for arrow keys)]
+		key2char[int(sf::Keyboard::Right)]='d';
+		key2char[int(sf::Keyboard::Up)]='w';
+		key2char[int(sf::Keyboard::Down)]='s';
+		
+		firstInstance=0;
+	}
+}
+
+WindowSFML::~WindowSFML()
+{
+	close();
+	
+	if (data)
+		delete[] data;
+}
+
+
+///from WindowBase
+
+//open the window with the given dimensions and name
+void WindowSFML::open(V2u dimIn, string nameIn)
+{
+	name=nameIn;
+	
+	if (dimIn.x)
+		windowObj.create(sf::VideoMode(dimIn.x, dimIn.y), name);
+	else
+	{
+		if (dimIn.y==0)
+			windowObj.create(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen);
+		else if (dimIn.y==1)
+		{
+			err << "requested maximized window, but SFML doesn't support that so making it 640x480" << err;
+			windowObj.create(sf::VideoMode(640, 480), name);
+		}
+	}
+	
+	hasBeenResized();
+	
+	windowIsOpen=windowObj.isOpen();
+	
+	windowHasFocus=windowIsOpen;
+	
+	refreshDisplay();
+	updateInput();
+}
+
+//close the window
+void WindowSFML::close()
+{
+	windowObj.close();
+}
+
+//repaint the window
+void WindowSFML::refreshDisplay()
+{
+	if (!windowObj.isOpen())
+	{
+		windowIsOpen=0;
+		return;
+	}
+	else if (!windowIsOpen)
+	{
+		//std::cout << ">> update called while window closed <<\n";
+		return;
+	}
+	
+	windowObj.display();
+}
+
+//get any new input
+void WindowSFML::updateInput()
+{
+	if (!windowIsOpen)
+	{
+		return;
+	}
+	else if (!windowObj.isOpen())
+	{
+		windowIsOpen=0;
+		return;
+	}
+	
+	sf::Event event;
+	
+	keyPressListPos=0;
+	keyPressNum=0;
+	
+	mouseLClick=0;
+	mouseRClick=0;
+	mouseMClick=0;
+	
+	mouseScroll=0;
+	
+	while (windowObj.pollEvent(event))
+	{
+		switch (event.type)
+		{
+		// window closed
+		case sf::Event::Closed:
+			windowObj.close();
+			break;
+		
+		// key pressed
+		case sf::Event::KeyPressed:
+			if (keyPressNum<MAX_KEY_PRESSES)
+			{
+				keyPresses[keyPressNum]=key2char[event.key.code];
+				++keyPressNum;
+			}
+			else
+			{
+				err << "key press overflow" << err;
+			}
+			break;
+		
+		case sf::Event::MouseButtonPressed:
+			switch (event.mouseButton.button)
+			{
+			case sf::Mouse::Left:
+				mouseLClick=1;
+				break;
+				
+			case sf::Mouse::Right:
+				mouseRClick=1;
+				break;
+				
+			case sf::Mouse::Middle:
+				mouseMClick=1;
+				break;
+			
+			default:
+				break;
+			}
+			break;
+		
+		case sf::Event::MouseWheelMoved:
+			mouseScroll+=event.mouseWheel.delta;
+			break;
+			
+		case sf::Event::Resized:
+			hasBeenResized();
+			break;
+			
+		case sf::Event::GainedFocus:
+			windowHasFocus=1;
+			break;
+		
+		case sf::Event::LostFocus:
+			windowHasFocus=0;
+			break;
+		
+		// we don't process other types of events
+		default:
+			break;
+		}
+	}
+	
+	sf::Vector2i mouseVctr=sf::Mouse::getPosition();
+	sf::Vector2i windowVctr=windowObj.getPosition();
+	
+	shiftDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
+	ctrlDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
+	altDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) || sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt);
+	superDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::RSystem) || sf::Keyboard::isKeyPressed(sf::Keyboard::RSystem);
+	
+	mouseLDwn=sf::Mouse::isButtonPressed(sf::Mouse::Left);
+	mouseRDwn=sf::Mouse::isButtonPressed(sf::Mouse::Right);
+	mouseMDwn=sf::Mouse::isButtonPressed(sf::Mouse::Middle);
+	
+	mouseLocDlta.x=mouseVctr.x-windowVctr.x-mouseLocation.x;
+	mouseLocDlta.y=dim.y-mouseVctr.y+windowVctr.y-mouseLocation.y;
+	
+	mouseLocation.x=mouseVctr.x-windowVctr.x;
+	mouseLocation.y=dim.y-mouseVctr.y+windowVctr.y;
+}
+
+void WindowSFML::hasBeenResized()
+{
+	V2u newDim(windowObj.getSize().x, windowObj.getSize().y);
+	
+	if (newDim==dim)
+		return;
+	
+	dim=newDim;
+	
+	//stop view from scaling with the window
+	
+	windowObj.setView(sf::View(sf::FloatRect(0, 0, dim.x, dim.y)));
+}
+
+
+///from Drawable
+
+//sets the value of a single pixel to the predefined drawing color
+void WindowSFML::set(int x, int y)
+{
+	/*if (drawAlpha>=1)
+		data[y*dim.x+x]=drawClr;
+	else if (drawAlpha>0)
+	{
+		ClrBGR * ptr=data+y*dim.x+x;
+		ptr->r=ptr->r*(1-drawAlpha)+drawClr.r*drawAlpha;
+		ptr->g=ptr->g*(1-drawAlpha)+drawClr.g*drawAlpha;
+		ptr->b=ptr->b*(1-drawAlpha)+drawClr.b*drawAlpha;
+	}*/
+}
+
+//set the draw color with a void pointer that is assumed to be of correct type
+void WindowSFML::setDrawClr(void * clrIn)
+{
+	drawClr=*((ClrBGR *)clrIn);
+}
+
+//set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
+void WindowSFML::setDrawClr(int clrIn)
+{
+	switch (clrIn)
+	{
+	case 1:
+		drawClr=clr(255, 255, 255);
+		break;
+		
+	case 2:
+		drawClr=clr(0, 16, 32);
+		break;
+		
+	case 3:
+		drawClr=clr(192, 255, 0);
+		break;
+		
+	case 4:
+		drawClr=clr(255, 0, 128);
+		break;
+		
+	default:
+		drawClr=clr(0, 0, 0);
+		break;
+	}
+}
+
+//set the draw color with a ClrRGBA pointer
+void WindowSFML::setDrawClr(ClrRGBA * clrIn)
+{
+	drawClr.r=clrIn->r;
+	drawClr.g=clrIn->g;
+	drawClr.b=clrIn->b;
+	drawAlpha=clrIn->a/255.0;
+}
+
+//set the draw color with a ClrRGBA value
+void WindowSFML::setDrawClr(ClrRGBA clrIn)
+{
+	drawClr.r=clrIn.r;
+	drawClr.g=clrIn.g;
+	drawClr.b=clrIn.b;
+	drawAlpha=clrIn.a/255.0;
+}
+
+//set the draw color with a ClrBGR value
+void WindowSFML::setDrawClr(ClrBGR * clrIn)
+{
+	drawClr=*clrIn;
+}
+
+//set the draw color with a ClrBGR value
+void WindowSFML::setDrawClr(ClrBGR clrIn)
+{
+	drawClr=clrIn;
+}
+
+//fills the entire window with a single color
+
+void WindowSFML::clear()
+{
+	if (drawAlpha==1)
+		windowObj.clear(sf::Color(drawClr.r, drawClr.g, drawClr.b, 255)); //this function ignores alpha value
+	else
+		rect(V2d(), dim);
+}
+
+//draws a filled rectangle
+void WindowSFML::rect(V2d low, V2d hgh)
+{
+	sf::RectangleShape rectangle(sf::Vector2f(hgh.x-low.x, hgh.y-low.y));
+	rectangle.setFillColor(sfmlDrawClr());
+	rectangle.setPosition(low.x, dim.y-hgh.y);
+	
+	windowObj.draw(rectangle);
+}
+
+//draws a filled circle
+void WindowSFML::circle(V2d pos, double radius)
+{
+	
+	sf::CircleShape shape(radius);
+	shape.setFillColor(sfmlDrawClr());
+	shape.setPosition(pos.x-radius, dim.y-pos.y-radius);
+	
+	windowObj.draw(shape);
+}
+
+//draw a line
+void WindowSFML::line(V2d a, V2d b)
+{
+	double rot=-atan2(b.y-a.y, b.x-a.x);
+	sf::RectangleShape rectangle(sf::Vector2f(dst(a, b), drawThick));
+	rectangle.setFillColor(sfmlDrawClr());
+	rectangle.setPosition(a.x+sin(rot)*drawThick/2, dim.y-a.y-cos(rot)*drawThick/2);
+	rectangle.setRotation(rad2deg(rot));
+	
+	windowObj.draw(rectangle);
+	circle(a, drawThick/2);
+	circle(b, drawThick/2);
+	//circle(a, drawThick/2, ::clr(0, 0, 0), 0.5);
+	//circle(b, drawThick/2, ::clr(0, 0, 0), 0.5);
+}
+
+
+///private
+
+//return the draw color and alpha as a sfml color
+sf::Color WindowSFML::sfmlDrawClr()
+{
+	return sf::Color(drawClr.r, drawClr.g, drawClr.b, drawAlpha*255);
+}
+
+}
+
+
