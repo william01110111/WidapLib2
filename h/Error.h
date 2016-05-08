@@ -55,6 +55,8 @@ public:
 		else
 			defaultPost(prefix+ss.str());
 		
+		ss.str(std::string());
+		
 		return *this;
 	}
 	

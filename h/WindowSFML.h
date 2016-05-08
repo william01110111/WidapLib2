@@ -11,6 +11,7 @@
 */
 
 #include "WindowBase.h"
+#include "Error.h"
 #include <SFML/Graphics.hpp>
 
 namespace widap
@@ -49,23 +50,17 @@ public:
 	//sets the value of a single pixel to the predefined drawing color
 	void set(int x, int y);
 	
-	//set the draw color with a void pointer that is assumed to be of correct type
-	void setDrawClr(void * clrIn);
-	
 	//set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 	void setDrawClr(int clrIn);
 	
-	//set the draw color with a ClrRGBA pointer
-	void setDrawClr(ClrRGBA * clrIn);
-
 	//set the draw color with a ClrRGBA value
 	void setDrawClr(ClrRGBA clrIn);
 	
-	//set the draw color with a ClrBGR pointer
-	void setDrawClr(ClrBGR * clrIn);
-	
 	//set the draw color with a ClrBGR value
 	void setDrawClr(ClrBGR clrIn);
+	
+	//set the draw color with a ClrBGR and alpha value
+	void setDrawClr(ClrBGR clrIn, double alphaIn);
 	
 	//fills the Drawable with the predefined color
 	virtual void clear();
@@ -76,13 +71,30 @@ public:
 	//draw a circle with the preset draw color
 	void circle(V2d center, double radius);
 	
+	//draw a triangle
+	void tri(V2d * virtsIn);
+	
 	//draw a line
-	void line(V2d start, V2d end);
+	void line(V2d start, V2d end, double thickness);
+	
+	//draw a drawable
+	void drawable(Drawable * other, V2d pos, double alphaIn);
+	
+	Type getType() {return WINDOW_SFML;}
+	
+	
+	///other
+	
+	//draw an image onto the window (is used by drawable(), so that works just as well)
+	//pointer type must be to an image
+	void image(Drawable * img, V2d pos, double alphaIn);
 	
 private:
 	
 	//return the draw color and alpha as a sfml color
 	sf::Color sfmlDrawClr();
+	
+	void textInit();
 	
 	sf::RenderWindow windowObj;
 	
@@ -96,6 +108,8 @@ private:
 	
 	//fixes things when the window is resized
 	void hasBeenResized();
+	
+	Error err;
 };
 
 }

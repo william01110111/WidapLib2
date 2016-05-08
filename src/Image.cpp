@@ -1,6 +1,8 @@
 #include "../h/Image.h"
 #include "../h/SimpMath.h"
 #include "../h/StringFuncs.h"
+#include "../h/TextBase.h"
+#include "../h/TextLineFont.h"
 #include "../h/Error.h"
 
 #include <fstream>
@@ -8,16 +10,54 @@
 namespace widap
 {
 
-Image::Image()
+void Image::init()
 {
+	textInit();
 	drawClr=clr(0, 0, 0);
 	err.setPrefix("widap::Image: ");
 	data=0;
+	managingData=1;
+}
+
+void Image::textInit()
+{
+	textPtr=new TextLineFont(this);
 }
 
 Image::~Image()
 {
 	makeEmpty();
+}
+
+//set the data, dimensions and automatically turn off data management
+void Image::setData(Clr * dataIn, V2u dimIn)
+{
+	if (dataIn!=data)
+	{
+		makeEmpty();
+		data=dataIn;
+		dim=dimIn;
+	}
+	
+	managingData=0;
+}
+
+//create a new image of the given size
+void Image::create(V2u dimIn)
+{
+	makeEmpty();
+	managingData=0;
+	dim=dimIn;
+	
+	try
+	{
+		data=new ClrBGR[dim.area()];
+	}
+	catch (std::bad_alloc)
+	{
+		err << "bad mem alloc while creating image data, attempted size was " << dim.area()*sizeof(ClrBGR)/1048576.0 << "MB" << err;
+		data=0;
+	}
 }
 
 //converts bytes to an int (used for reading bitmap header)
@@ -48,8 +88,6 @@ void Image::num2bytes(unsigned char *ptr, int byteNum, int num)
 //returns true if error occurred (such as file not found)
 bool Image::load(string filename)
 {
-	makeEmpty();
-	
 	string ext=getFileExtension(filename);
 	
 	if (ext!="bmp")
@@ -67,19 +105,19 @@ bool Image::load(string filename)
 	
 	file.read((char *)header, 54);
 	
-	dim.x=bytes2num(header+18, 4);
-	dim.y=bytes2num(header+22, 4);
+	V2u dimNew;
 	
-	if (dim.x%4 || dim.y%4)
+	dimNew.x=bytes2num(header+18, 4);
+	dimNew.y=bytes2num(header+22, 4);
+	
+	if (dimNew.x%4 || dimNew.y%4)
 		err << "saved bitmap dimensions not divisible by 4\n\tthis is not yet implemented properly, so expect strange results" << err;
 	
-	try
+	create(dimNew);
+	
+	if (!data)
 	{
-		data=new ClrBGR[dim.area()];
-	}
-	catch (std::bad_alloc)
-	{
-		err << "bad mem alloc while loading image, attempted size was " << dim.area()*sizeof(ClrBGR)/1048576.0 << "mb" << err;
+		err << "loading bitmap file '" << filename << "' failed, probably due to memory error" << err;
 		return 1;
 	}
 	
@@ -93,10 +131,12 @@ bool Image::load(string filename)
 //deletes any data in this image
 void Image::makeEmpty()
 {
-	if (data)
+	if (data && managingData)
 	{
 		delete[] data;
 	}
+	
+	data=0;
 	
 	dim=0;
 }
@@ -170,12 +210,6 @@ void Image::set(int x, int y)
 	}
 }
 
-//set the draw color with a void pointer that is assumed to be of correct type
-void Image::setDrawClr(void * clrIn)
-{
-	drawClr=*((ClrBGR *)clrIn);
-}
-
 //set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 void Image::setDrawClr(int clrIn)
 {
@@ -201,15 +235,8 @@ void Image::setDrawClr(int clrIn)
 		drawClr=clr(0, 0, 0);
 		break;
 	}
-}
-
-//set the draw color with a ClrRGBA pointer
-void Image::setDrawClr(ClrRGBA * clrIn)
-{
-	drawClr.r=clrIn->r;
-	drawClr.g=clrIn->g;
-	drawClr.b=clrIn->b;
-	drawAlpha=clrIn->a/255.0;
+	
+	drawAlpha=1;
 }
 
 //set the draw color with a ClrRGBA value
@@ -222,15 +249,17 @@ void Image::setDrawClr(ClrRGBA clrIn)
 }
 
 //set the draw color with a ClrBGR value
-void Image::setDrawClr(ClrBGR * clrIn)
-{
-	drawClr=*clrIn;
-}
-
-//set the draw color with a ClrBGR value
 void Image::setDrawClr(ClrBGR clrIn)
 {
 	drawClr=clrIn;
+	drawAlpha=1;
+}
+
+//set the draw color with a ClrBGR and an alpha value
+void Image::setDrawClr(ClrBGR clrIn, double alphaIn)
+{
+	drawClr=clrIn;
+	drawAlpha=alphaIn;
 }
 
 /*

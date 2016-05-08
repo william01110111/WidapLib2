@@ -5,7 +5,7 @@
 namespace widap
 {
 
-Error err;
+Error err("global error: ");
 
 void (*Error::defaultPost)(std::string)=defaultDefaultPost;
 

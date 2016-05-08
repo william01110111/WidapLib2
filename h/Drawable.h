@@ -1,12 +1,13 @@
-#include "Vector.h"
+#pragma once
+
+#include "Vector2D.h"
 #include "Color.h"
+#include "TextBase.h"
 
 #include <string>
 using std::string;
 
 ///this declares the Drawable superclass that you can draw to
-
-#pragma once
 
 namespace widap
 {
@@ -17,23 +18,21 @@ class Drawable
 	//any function that is overloaded with some versions virtual and others not must go here
 	
 	#define USING_DRAWABLE			\
-		using Drawable::set;		\
 		using Drawable::setDrawClr;	\
 		using Drawable::clear;		\
 		using Drawable::rect;		\
 		using Drawable::circle;		\
+		using Drawable::tri;		\
 		using Drawable::line;		\
+		using Drawable::drawable	\
 		
 	
 public:
 	
 	Drawable();
+	~Drawable();
 	
 	///virtual functions
-	
-	//sets the value of a single pixel to the predefined drawing color
-	//does not use V2i for speed reasons, but there is a V2i rapper
-	virtual void set(int x, int y)=0;
 	
 	virtual V2u getDim()=0;
 	
@@ -54,36 +53,38 @@ public:
 	//set the draw color with a ClrBGR, the most common way to draw
 	virtual void setDrawClr(ClrBGR clrIn);
 	
-	//set the draw color with a ClrRGBA, the most common way to draw
+	//set the draw color with a ClrBGR, plus an alpha value, also common
+	virtual void setDrawClr(ClrBGR clrIn, double alphaIn);
+	
+	//set the draw color with a ClrRGBA
 	virtual void setDrawClr(ClrRGBA clrIn);
 	
-	//set the draw color with a ClrHSL, the most common way to draw
+	//set the draw color with a ClrHSL
 	virtual void setDrawClr(ClrHSL clrIn);
 	
 	
-	///shape virtual functions
-	//these have implementation that use set() but you may want to implement them differently for faster speed
+	///shape pure virtual functions
 	
 	//fills the Drawable with the predefined color
-	virtual void clear();
+	virtual void clear()=0;
 	
 	//draw a rectangle with the preset draw color
-	virtual void rect(V2d low, V2d hgh);
+	virtual void rect(V2d low, V2d hgh)=0;
 	
 	//draw a circle with the preset draw color
-	virtual void circle(V2d center, double radius);
+	virtual void circle(V2d center, double radius)=0;
+	
+	//draw a triangle
+	virtual void tri(V2d * vertsIn)=0;
 	
 	//draw a line
-	virtual void line(V2d start, V2d end);
+	virtual void line(V2d start, V2d end, double thick)=0;
 	
-	//draw text
-	//virtual void text(string str, V2d pos, )
+	//draw another drawable, this will only work if the specific combination of types has been implemented
+	virtual void drawable(Drawable * other, V2d pos, double alphaIn)=0;
 	
 	
 	///mscl
-	
-	//sets the given pixel to the predefined color, probably better to use set(int, int) for speed ans this is just a rapper
-	void set(V2i loc);
 	
 	//sets the draw color and the alpha
 	template<typename T>
@@ -95,9 +96,6 @@ public:
 	
 	//just sets the alpha for drawing
 	void setDrawAlpha(double alphaIn);
-	
-	//sets the thickness of lines drawn
-	void setDrawThick(double alphaIn);
 	
 	///shapes:
 	
@@ -115,7 +113,6 @@ public:
 	void clear(T clrIn)
 	{
 		setDrawClr(clrIn);
-		drawAlpha=1;
 		clear();
 	}
 	
@@ -133,7 +130,6 @@ public:
 	void rect(V2d low, V2d hgh, T clrIn)
 	{
 		setDrawClr(clrIn);
-		drawAlpha=1;
 		rect(low, hgh);
 	}
 	
@@ -143,7 +139,6 @@ public:
 	void circle(V2d center, double radius, T clrIn, double alphaIn)
 	{
 		setDrawClr(clrIn);
-		drawAlpha=alphaIn;
 		circle(center, radius);
 	}
 	
@@ -151,8 +146,24 @@ public:
 	void circle(V2d center, double radius, T clrIn)
 	{
 		setDrawClr(clrIn);
-		drawAlpha=1;
 		circle(center, radius);
+	}
+	
+	//tri
+	
+	template<typename T>
+	void tri(V2d * vertsIn, T clrIn, double alphaIn)
+	{
+		setDrawClr(clrIn);
+		drawAlpha=alphaIn;
+		tri(vertsIn);
+	}
+	
+	template<typename T>
+	void tri(V2d * vertsIn, T clrIn)
+	{
+		setDrawClr(clrIn);
+		tri(vertsIn);
 	}
 	
 	//line
@@ -162,8 +173,7 @@ public:
 	{
 		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
-		drawThick=thickness;
-		line(start, end);
+		line(start, end, thickness);
 	}
 	
 	template<typename T>
@@ -171,32 +181,52 @@ public:
 	{
 		setDrawClr(clrIn);
 		drawAlpha=1;
-		drawThick=thickness;
-		line(start, end);
+		line(start, end, thickness);
 	}
 	
-	template<typename T>
-	void line(V2d start, V2d end, T clrIn, double alphaIn)
+	//drawable
+	
+	void drawable(Drawable * other, V2d pos)
 	{
-		setDrawClr(clrIn);
-		drawAlpha=alphaIn;
-		line(start, end);
+		drawable(other, pos, 1);
 	}
 	
-	template<typename T>
-	void line(V2d start, V2d end, T clrIn)
+	void drawable(Drawable * other)
 	{
-		setDrawClr(clrIn);
-		drawAlpha=1;
-		line(start, end);
+		drawable(other, V2d(), 1);
 	}
+	
+	
+	///text
+	
+	TextBase * text() {return textPtr;}
+	void text(char c);
+	void text(string s);
+	template <typename T> void text(string s, V2d posIn, double heightIn, T clrIn, double alphaIn=1) {textPtr->draw(s, posIn, heightIn, clrIn, alphaIn);}
+	
+	
+	///type id
+	
+	enum Type
+	{
+		IMAGE_BGR,
+		WINDOW_SFML,
+		UNKNOWN
+	};
+	
+	virtual Type getType() {return UNKNOWN;}
+
 	
 protected:
+	
+	TextBase * textPtr;
+	
+	//called only by the constructor, should init the textPtr pointer
+	virtual void textInit()=0;
 	
 	///state variables
 	
 	double drawAlpha; //0.0-1.0, 0 is fully transparent, 1 is fully opaque
-	double drawThick; //the thickness of lines drawn
 };
 
 }
