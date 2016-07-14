@@ -37,11 +37,12 @@ void WindowBase::resetVars()
 	windowIsOpen=0;
 }
 
-void WindowBase::nextFrame()
+bool WindowBase::nextFrame()
 {
 	refreshDisplay();
 	timer.waitUntil(frameTime);
 	updateInput();
+	return windowIsOpen;
 }
 
 char WindowBase::nextKey()

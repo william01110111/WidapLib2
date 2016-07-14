@@ -72,8 +72,8 @@ public:
 	//update the input
 	virtual void updateInput()=0;
 	
-	//display the frame, wait until the frame time is done then update input and return
-	void nextFrame();
+	//display the frame, wait until the frame time is done then update input and return if the window is still open
+	bool nextFrame();
 	
 	//close the window
 	virtual void close()=0;

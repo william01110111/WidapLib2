@@ -11,8 +11,10 @@ class TextLineFont : public TextBase
 public:
 	TextLineFont(Drawable * drwblIn);
 	
-	static constexpr double LINE_THICKNESS_RATEO=0.03; // the thickness of the lines that make up the glyphs relative to the height
-	static constexpr double BOLD_THICKNESS_RATEO=0.1;
+	
+	/** ||| **/ static constexpr double LINE_THICKNESS_RATEO=0.03; // the thickness of the lines that make up the glyphs relative to the height
+	/** VVV **/ static constexpr double BOLD_THICKNESS_RATEO=0.1;
+	/// If you get an error here, it probably means your not using C++ 11, which you should be
 	
 protected:
 	Drawable * drwbl; // the drawable that the text will be drawn to
