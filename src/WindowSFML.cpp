@@ -230,8 +230,7 @@ void WindowSFML::updateInput()
 		}
 	}
 	
-	sf::Vector2i mouseVctr=sf::Mouse::getPosition();
-	sf::Vector2i windowVctr=windowObj.getPosition();
+	sf::Vector2i mouseVctr=sf::Mouse::getPosition(windowObj);
 	
 	shiftDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
 	ctrlDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
@@ -242,11 +241,11 @@ void WindowSFML::updateInput()
 	mouseRDwn=sf::Mouse::isButtonPressed(sf::Mouse::Right);
 	mouseMDwn=sf::Mouse::isButtonPressed(sf::Mouse::Middle);
 	
-	mouseLocDlta.x=mouseVctr.x-windowVctr.x-mouseLocation.x;
-	mouseLocDlta.y=dim.y-mouseVctr.y+windowVctr.y-mouseLocation.y;
+	mouseLocDlta.x=mouseVctr.x-mouseLocation.x;
+	mouseLocDlta.y=dim.y-mouseVctr.y-mouseLocation.y;
 	
-	mouseLocation.x=mouseVctr.x-windowVctr.x;
-	mouseLocation.y=dim.y-mouseVctr.y+windowVctr.y;
+	mouseLocation.x=mouseVctr.x;
+	mouseLocation.y=dim.y-mouseVctr.y;
 }
 
 void WindowSFML::hasBeenResized()

@@ -47,6 +47,8 @@ public:
 	//return the area, or x*y
 	T area() {return x*y;}
 	
+	V2<T> clone() {V2<T>(x, y);}
+	
 	//clamps each component
 	void clamp(V2 low, V2 hgh)
 	{
