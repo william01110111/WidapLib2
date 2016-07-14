@@ -7,7 +7,7 @@ namespace widap
 {
 
 bool WindowSFML::firstInstance=1;
-sf::Font WindowSFML::font;
+//sf::Font WindowSFML::font;
 char WindowSFML::key2char[127];
 
 
@@ -25,11 +25,15 @@ WindowSFML::WindowSFML()
 	
 	if (firstInstance)
 	{
-		if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf"))
-			//if (!font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMono.ttf"))
+		/*if
+		(
+			!font.loadFromFile("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf") &&
+			!font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMono.ttf") &&
+			!font.loadFromFile("/usr/share/fonts/TTF/DejaVuSans.ttf")
+		)
 		{
 			err << "font failed to load" << err;
-		}
+		}*/
 		
 		int i;
 		

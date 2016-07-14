@@ -99,7 +99,7 @@ private:
 	sf::RenderWindow windowObj;
 	
 	static bool firstInstance;
-	static sf::Font font;
+	//static sf::Font font;
 	static char key2char[127];
 	
 	ClrBGR drawClr;

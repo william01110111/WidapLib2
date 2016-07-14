@@ -38,6 +38,9 @@ public:
 	Error();
 	Error(std::string prefixIn);
 	
+	//compiler gives a warning without this
+	~Error() {}
+	
 	//allows writing to the error message just like cout
 	//since its a template, it must be in this header
 	template<typename T>
