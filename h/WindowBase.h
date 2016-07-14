@@ -3,6 +3,7 @@
 
 #include "Drawable.h"
 #include "../h/Error.h"
+#include "../h/Timer.h"
 #include <string>
 using std::string;
 
@@ -58,6 +59,10 @@ public:
 	//retrieve the name of the window
 	string getName() {return name;}
 	
+	//set the frame time both in delay per frame and FPS
+	void setFrameTime(double frameTimeIn) {frameTime=frameTimeIn;}
+	void setFPS(double fpsIn) {frameTime=1.0/fpsIn;}
+	
 	//open the window, if dimensions are (0, 0) it will be full screen, (0, 1) is maximized 
 	virtual void open(V2u dimIn, string nameIn)=0;
 	
@@ -66,6 +71,9 @@ public:
 	
 	//update the input
 	virtual void updateInput()=0;
+	
+	//display the frame, wait until the frame time is done then update input and return
+	void nextFrame();
 	
 	//close the window
 	virtual void close()=0;
@@ -93,6 +101,9 @@ protected:
 	
 	bool windowHasFocus;
 	bool windowIsOpen;
+	
+	double frameTime;
+	Timer timer;
 	
 	Error err; //the object for reporting errors
 };

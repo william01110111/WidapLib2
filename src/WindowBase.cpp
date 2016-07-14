@@ -32,8 +32,16 @@ void WindowBase::resetVars()
 	superDwnBool=0;
 	keyPressNum=0;
 	keyPressListPos=0;
+	frameTime=1.0/60.0;
 	windowHasFocus=0;
 	windowIsOpen=0;
+}
+
+void WindowBase::nextFrame()
+{
+	refreshDisplay();
+	timer.waitUntil(frameTime);
+	updateInput();
 }
 
 char WindowBase::nextKey()

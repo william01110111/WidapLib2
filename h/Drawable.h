@@ -139,6 +139,7 @@ public:
 	void circle(V2d center, double radius, T clrIn, double alphaIn)
 	{
 		setDrawClr(clrIn);
+		drawAlpha=alphaIn;
 		circle(center, radius);
 	}
 	
