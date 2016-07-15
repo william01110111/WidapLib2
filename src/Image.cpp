@@ -45,18 +45,21 @@ void Image::setData(Clr * dataIn, V2u dimIn)
 //create a new image of the given size
 void Image::create(V2u dimIn)
 {
-	makeEmpty();
-	managingData=1;
-	dim=dimIn;
+	if (!data || dim!=dimIn || !managingData)
+	{
+		makeEmpty();
+		managingData=1;
+		dim=dimIn;
 	
-	try
-	{
-		data=new ClrBGR[dim.area()];
-	}
-	catch (std::bad_alloc)
-	{
-		err << "bad mem alloc while creating image data, attempted size was " << dim.area()*sizeof(ClrBGR)/1048576.0 << "MB" << err;
-		data=0;
+		try
+		{
+			data=new ClrBGR[dim.area()];
+		}
+		catch (std::bad_alloc)
+		{
+			err << "bad mem alloc while creating image data, attempted size was " << dim.area()*sizeof(ClrBGR)/1048576.0 << "MB" << err;
+			data=0;
+		}
 	}
 }
 
@@ -133,7 +136,6 @@ void Image::makeEmpty()
 {
 	if (data && managingData)
 	{
-		err << "deleting image" << err;
 		delete[] data;
 	}
 	
