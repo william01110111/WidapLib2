@@ -46,7 +46,7 @@ void Image::setData(Clr * dataIn, V2u dimIn)
 void Image::create(V2u dimIn)
 {
 	makeEmpty();
-	managingData=0;
+	managingData=1;
 	dim=dimIn;
 	
 	try
@@ -133,6 +133,7 @@ void Image::makeEmpty()
 {
 	if (data && managingData)
 	{
+		err << "deleting image" << err;
 		delete[] data;
 	}
 	
