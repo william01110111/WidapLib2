@@ -85,6 +85,13 @@ public:
 	
 	Type getType() {return IMAGE_BGR;}
 	
+	//draw a drawable
+	void drawable(Drawable * other, V2d pos, double alphaIn);
+	
+	//draw an image onto the window (is used by drawable(), so that works just as well)
+	//pointer type must be to an image
+	void image(Drawable * img, V2d pos, double alphaIn);
+	
 private:
 	//this should be done by the constructor, but I was having an odd issue with constructor chaining
 	void init();

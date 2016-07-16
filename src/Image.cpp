@@ -265,23 +265,57 @@ void Image::setDrawClr(ClrBGR clrIn, double alphaIn)
 	drawAlpha=alphaIn;
 }
 
-/*
-void Image::rect(V2d low, V2d hgh)
+//draw a drawable
+void Image::drawable(Drawable * other, V2d pos, double alphaIn)
 {
-	low.max(V2d());
-	hgh.min(dim);
+	switch (other->getType())
+	{
+	case IMAGE_BGR:
+		image((Image *)other, pos, alphaIn);
+		break;
+		
+	default:
+		Drawable::drawable(other, pos);
+	}
+}
+
+//draws an image, the pointer must be to an image type
+void Image::image(Drawable * imgIn, V2d pos, double alphaIn)
+{
+	V2i low=max(V2d(), pos), hgh=min((V2i)dim, (V2i)pos+imgIn->getDim()), i;
 	
-	V2i i;
+	int othrImgWdth=imgIn->getDim().x;
+	
+	int yo0, yo1;
+	
+	Clr * other=((Image *)imgIn)->getData();
 	
 	for (i.y=low.y; i.y<hgh.y; ++i.y)
 	{
-		for (i.x=low.x; i.x<hgh.x; ++i.x)
+		yo0=i.y*othrImgWdth;
+		yo1=-pos.x+(i.y-pos.y)*dim.x;
+		
+		if (alphaIn>=1)
 		{
-			data[i.y*dim.x+i.x]=drawClr;
+			for (i.x=low.x; i.x<hgh.x; ++i.x)
+			{
+				data[i.x+yo0]=other[i.x+yo1];
+			}
+		}
+		else
+		{
+			for (i.x=low.x; i.x<hgh.x; ++i.x)
+			{
+				ClrBGR * ptr=data+i.y*dim.x+i.x;
+				ClrBGR clr=other[i.x+yo1];
+				ptr->r=ptr->r*(1-drawAlpha)+clr.r*drawAlpha;
+				ptr->g=ptr->g*(1-drawAlpha)+clr.g*drawAlpha;
+				ptr->b=ptr->b*(1-drawAlpha)+clr.b*drawAlpha;
+			}
 		}
 	}
 }
-*/
+
 
 }
 
