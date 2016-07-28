@@ -29,11 +29,8 @@ void ImageBase::clear()
 
 void ImageBase::rect(V2d lowD, V2d hghD)
 {
-	V2i low=lowD;
-	V2i hgh=hghD;
-	
-	low.max(V2i());
-	hgh.min(getDim());
+	V2i low=lowD.max(V2i());
+	V2i hgh=hghD.min(getDim());
 	
 	V2i i;
 	

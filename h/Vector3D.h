@@ -1,5 +1,6 @@
 
 
+
 ///this file contains declarations and implementation of 3D vectors
 
 #pragma once
@@ -31,8 +32,13 @@ public:
 	//constructor with values
 	V3(T xIn, T yIn, T zIn) {x=xIn; y=yIn; z=zIn;}
 	
+	V3<T> copy() {return V3<T>(x, y, z);}
+	
 	
 	///mscl
+	
+	//set vars to zero
+	void zero() {x=0; y=0; z=0;}
 	
 	//distance from the origin to this point
 	double dst() {return sqrt(x*x+y*y+z*z);}
@@ -40,59 +46,50 @@ public:
 	//distance to another point
 	double dst(V3<T> in) {return sqrt((x-in.x)*(x-in.x)+(y-in.y)*(y-in.y))+(z-in.z)*(z-in.z);}
 	
-	//set all values to 0
-	void zero() {x=0; y=0; z=0;}
+	//simply return the distance squared
+	double dstSquared() {return x*x+y*y+z*z;}
 	
 	//return the area, or x*y
 	T area() {return x*y*z;}
 	
-	//clamps each component
-	void clamp(V3 low, V3 hgh)
+	//returns this vector with a length of 1
+	V3 normalize()
 	{
-		if (x<low.x)
-			x=low.x;
-		
-		if (y<low.y)
-			y=low.y;
-		
-		if (z<low.z)
-			z=low.z;
-		
-		if (x>hgh.x)
-			x=hgh.x;
-		
-		if (y>hgh.y)
-			y=hgh.y;
-		
-		if (z>hgh.z)
-			z=hgh.z;
+		T dvdr=dst();
+		return Vctr3(x/dvdr, y/dvdr, z/dvdr);
 	}
 	
-	//sets vector to the minimum of each component
-	void min(V3 in)
+	//returns each component clamped
+	V3 clamp(V3 low, V3 hgh)
 	{
-		if (x>in.x)
-			x=in.x;
-		
-		if (y>in.y)
-			y=in.y;
-		
-		if (z>in.z)
-			z=in.z;
-		
+		return V3
+		(
+			x<low.x?low.x:(x>hgh.x?hgh.x:x),
+			y<low.y?low.y:(y>hgh.y?hgh.y:y),
+			z<low.z?low.z:(z>hgh.z?hgh.z:z)
+		);
+	}
+	
+	//returns the minimum of each component
+	V3 min(V3 in)
+	{
+		return V3
+		(
+			x>in.x?in.x:x,
+			y>in.y?in.y:y,
+			z>in.z?in.z:z
+		);
 	}
 	
 	//sets vector to the maximum of each component
-	void max(V3 in)
+	V3 max(V3 in)
 	{
-		if (x<in.x)
-			x=in.x;
-		
-		if (y<in.y)
-			y=in.y;
-		
-		if (z<in.z)
-			z=in.z;
+		return V3
+		(
+			x<in.x?in.x:x,
+			y<in.y?in.y:y,
+			z<in.z?in.z:z
+		);
 	}
 	
 	
@@ -153,6 +150,19 @@ public:
 	template<typename U>
 	void operator/= (U in) {x/=in; y/=in; z/=in;}
 	
+	///3D math
+	
+	//dot product
+	T dot(const V3& b)
+	{
+		return x*b.x+y*b.y+z*b.z;
+	}
+	
+	//cross product
+	V3<T> cross(const V3& b)
+	{
+		return Vctr3(y*b.z-z*b.y, z*b.x-x*b.z, x*b.y-y*b.x);
+	}
 	
 	///special cases
 	

@@ -32,60 +32,68 @@ public:
 	//constructor with values
 	V2(T xIn, T yIn) {x=xIn; y=yIn;}
 	
+	V2<T> copy() {return V2<T>(x, y);}
+	
 	
 	///mscl
+	
+	//set vars to zero
+	void zero() {x=0; y=0;}
 	
 	//distance from the origin to this point
 	double dst() {return sqrt(x*x+y*y);}
 	
+	//simply return the distance squared
+	double dstSquared() {return x*x+y*y;}
+	
 	//distance to another point
 	double dst(V2<T> in) {return sqrt((x-in.x)*(x-in.x)+(y-in.y)*(y-in.y));}
-	
-	//set all values to 0
-	void zero() {x=0; y=0;}
 	
 	//return the area, or x*y
 	T area() {return x*y;}
 	
-	V2<T> clone() {V2<T>(x, y);}
-	
-	//clamps each component
-	void clamp(V2 low, V2 hgh)
+	//returns this vector with a length of 1
+	V2 normalize()
 	{
-		if (x<low.x)
-			x=low.x;
-		
-		if (y<low.y)
-			y=low.y;
-		
-		if (x>hgh.x)
-			x=hgh.x;
-		
-		if (y>hgh.y)
-			y=hgh.y;
+		T dvdr=dst();
+		return V2(x/dvdr, y/dvdr);
 	}
 	
-	//sets vector to the minimum of each component
-	void min(V2 in)
+	//returns each component clamped
+	V2 clamp(V2 low, V2 hgh)
 	{
-		if (x>in.x)
-			x=in.x;
-		
-		if (y>in.y)
-			y=in.y;
-		
+		return V2
+		(
+			x<low.x?low.x:(x>hgh.x?hgh.x:x),
+			y<low.y?low.y:(y>hgh.y?hgh.y:y)
+		);
+	}
+	
+	//returns the minimum of each component
+	V2 min(V2 in)
+	{
+		return V2
+		(
+			x>in.x?in.x:x,
+			y>in.y?in.y:y
+		);
 	}
 	
 	//sets vector to the maximum of each component
-	void max(V2 in)
+	V2 max(V2 in)
 	{
-		if (x<in.x)
-			x=in.x;
-		
-		if (y<in.y)
-			y=in.y;
+		return V2
+		(
+			x<in.x?in.x:x,
+			y<in.y?in.y:y
+		);
 	}
 	
+	//dot product
+	T dot(const V2& b)
+	{
+		return x*b.x+y*b.y;
+	}
 	
 	///casting
 	
@@ -201,7 +209,6 @@ inline V2<T> ceil(V2<T> a)
 {
 	return V2<T>(std::ceil(a.x), std::ceil(a.y));
 }
-
 
 //return a new vector that is in
 inline V2d lerp(V2d in, V2d inLow, V2d inHgh, V2d outLow, V2d outHgh)

@@ -1,6 +1,7 @@
 #include "../h/Drawable.h"
 #include "../h/Error.h"
 #include "../h/SimpMath.h"
+#include "../h/ComplexMath.h"
 
 namespace widap
 {
@@ -72,6 +73,67 @@ void Drawable::setDrawAlpha(double alphaIn)
 	drawAlpha=alphaIn;
 }
 
+void Drawable::poly(V2d * vertsIn, int vertNum)
+{
+	V2d * buffer=new V2d[vertNum];
+	int pos, i;
+	bool isEar;
+	int lastVertNum=vertNum;
+	V2d v[3];
+	
+	for (i=0; i<vertNum; ++i)
+	{
+		buffer[i]=vertsIn[i];
+	}
+	
+	pos=vertNum;
+	
+	while (vertNum>2)
+	{
+		v[0]=buffer[(pos+0)%vertNum];
+		v[1]=buffer[(pos+1)%vertNum];
+		v[2]=buffer[(pos+2)%vertNum];
+		isEar=false;
+		
+		if (isOnRightSideOfLine(v[1], v[0], v[2]))
+		{
+			isEar=true;
+			
+			for (i=pos+3; i<pos+vertNum; ++i)
+			{
+				if (isInTriangle(buffer[i%vertNum], v[0], v[1], v[2]))
+				{
+					isEar=false;
+					break;
+				}
+			}
+		}
+		
+		if (isEar)
+		{
+			tri(v);
+			
+			for (i=pos+1; (i%vertNum)<vertNum-1; ++i)
+			{
+				buffer[i%vertNum]=buffer[(i+1)%vertNum];
+			}
+			
+			--vertNum;
+		}
+		else
+		{
+			++pos;
+			
+			if (!(pos%vertNum))
+			{
+				if (lastVertNum==vertNum)
+					break;
+				else
+					lastVertNum=vertNum;
+			}
+		}
+	}
+}
 
 ///Text
 

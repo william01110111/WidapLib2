@@ -97,6 +97,8 @@ public:
 	//just sets the alpha for drawing
 	void setDrawAlpha(double alphaIn);
 	
+	void poly(V2d * vertsIn, int vertNum);
+	
 	///shapes:
 	
 	//clear
@@ -195,6 +197,23 @@ public:
 	void drawable(Drawable * other)
 	{
 		drawable(other, V2d(), 1);
+	}
+	
+	//poly
+	
+	template<typename T>
+	void poly(V2d * vertsIn, int vertNum, T clrIn, double alphaIn)
+	{
+		setDrawClr(clrIn);
+		drawAlpha=alphaIn;
+		poly(vertsIn, vertNum);
+	}
+	
+	template<typename T>
+	void poly(V2d * vertsIn, int vertNum, T clrIn)
+	{
+		setDrawClr(clrIn);
+		poly(vertsIn, vertNum);
 	}
 	
 	

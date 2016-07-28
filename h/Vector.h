@@ -16,9 +16,8 @@ public:
 	//use the distance formula
 	virtual double dst()=0;
 	
-	//set all values to 0
+	//set all vars to zero
 	virtual void zero()=0;
-	
 };
 
 }
