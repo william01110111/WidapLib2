@@ -14,17 +14,17 @@ namespace widap
 
 class Surface
 {
-	//put USING_DRAWABLE somewhere in the header of subclasses to get access to all the functions
+	//put USING_SURFACE somewhere in the header of subclasses to get access to all the functions
 	//any function that is overloaded with some versions virtual and others not must go here
 	
-	#define USING_DRAWABLE			\
+	#define USING_SURFACE			\
 		using Surface::setDrawClr;	\
 		using Surface::clear;		\
 		using Surface::rect;		\
 		using Surface::circle;		\
-		using Surface::tri;		\
+		using Surface::tri;			\
 		using Surface::line;		\
-		using Surface::surface	\
+		using Surface::surface		\
 		
 	
 public:

@@ -1,4 +1,4 @@
-#include "../../h/Graphics/WindowBase.h"
+#include "../../h/Window/WindowBase.h"
 
 namespace widap
 {

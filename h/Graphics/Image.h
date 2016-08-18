@@ -56,7 +56,7 @@ public:
 	
 	///from Surface
 	
-	USING_DRAWABLE;
+	USING_SURFACE;
 	
 	//sets the value of a single pixel to the predefined drawing color
 	void set(int x, int y);

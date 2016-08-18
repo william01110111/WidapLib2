@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Surface.h"
+#include "../Graphics/Surface.h"
 #include "InputSource.h"
 #include "../../../WidapChess/Error.h"
 #include "../Mscl/Timer.h"
@@ -51,13 +51,15 @@ protected:
 	void resetVars();
 	
 	string name;
-	V2u dim; //the dimensions of the window
+	//V2u dim; //the dimensions of the window
 	
 	bool windowHasFocus;
 	bool windowIsOpen;
 	
 	double frameTime;
 	Timer timer;
+	
+	V2u dim;
 	
 	Error err; //the object for reporting errors
 };

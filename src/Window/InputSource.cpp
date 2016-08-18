@@ -1,5 +1,5 @@
 
-#include "../../h/Graphics/InputSource.h"
+#include "../../h/Window/InputSource.h"
 
 namespace widap
 {

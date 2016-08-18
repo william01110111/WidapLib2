@@ -43,7 +43,7 @@ public:
 	
 	///from Surface
 	
-	USING_DRAWABLE;
+	USING_SURFACE;
 	
 	//V2u getDim(); //no need, implemented in WindowBase
 	

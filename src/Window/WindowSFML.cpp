@@ -1,4 +1,4 @@
-#include "../../h/Graphics/WindowSFML.h"
+#include "../../h/Window/WindowSFML.h"
 #include "../../h/Math/SimpMath.h"
 #include "../../h/Graphics/TextLineFont.h"
 #include "../../h/Graphics/Image.h"

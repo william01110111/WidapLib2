@@ -47,6 +47,8 @@ public:
 	//update the input
 	virtual void updateInput()=0;
 	
+	virtual V2u getDim()=0;
+	
 protected:
 	
 	//zeros out vars
