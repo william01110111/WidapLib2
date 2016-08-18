@@ -1,7 +1,7 @@
-#include "../h/WindowSFML.h"
-#include "../h/SimpMath.h"
-#include "../h/TextLineFont.h"
-#include "../h/Image.h"
+#include "../../h/Graphics/WindowSFML.h"
+#include "../../h/Math/SimpMath.h"
+#include "../../h/Graphics/TextLineFont.h"
+#include "../../h/Graphics/Image.h"
 
 namespace widap
 {
@@ -263,7 +263,7 @@ void WindowSFML::hasBeenResized()
 }
 
 
-///from Drawable
+///from Surface
 
 //sets the value of a single pixel to the predefined drawing color
 void WindowSFML::set(int x, int y)
@@ -396,8 +396,8 @@ void WindowSFML::line(V2d a, V2d b, double thickness)
 	//circle(b, drawThick/2, ::clr(0, 0, 0), 0.5);
 }
 
-//draw a drawable
-void WindowSFML::drawable(Drawable * other, V2d pos, double alphaIn)
+//draw a surface
+void WindowSFML::surface(Surface * other, V2d pos, double alphaIn)
 {
 	switch (other->getType())
 	{
@@ -406,7 +406,7 @@ void WindowSFML::drawable(Drawable * other, V2d pos, double alphaIn)
 		break;
 		
 	default:
-		Drawable::drawable(other, pos);
+		Surface::surface(other, pos);
 	}
 }
 
@@ -414,13 +414,13 @@ void WindowSFML::drawable(Drawable * other, V2d pos, double alphaIn)
 ///other
 
 //draws an image, the pointer must be to an image type
-void WindowSFML::image(Drawable * imgIn, V2d pos, double alphaIn)
+void WindowSFML::image(Surface * imgIn, V2d pos, double alphaIn)
 {
 	unsigned char alpha=alphaIn*255;
 	
 	if (imgIn->getType()!=IMAGE_BGR)
 	{
-		err << "image() was called with a drawable pointer not of type Image" << err;
+		err << "image() was called with a surface pointer not of type Image" << err;
 		return;
 	}
 	

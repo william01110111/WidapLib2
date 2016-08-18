@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector2D.h"
+#include "../Math/Vector2D.h"
 
 #include <string>
 using std::string;
@@ -8,7 +8,7 @@ using std::string;
 namespace widap
 {
 
-class Drawable;
+class Surface;
 
 class TextBase
 {
@@ -70,7 +70,7 @@ private:
 	class ClrTypeBase
 	{
 	public:
-		virtual void setDrawClr(Drawable * drwbl)=0;
+		virtual void setDrawClr(Surface * surface)=0;
 		virtual ~ClrTypeBase() {}
 	};
 	
@@ -80,7 +80,7 @@ private:
 	{
 	public:
 		ClrType(T in) {data=in;}
-		void setDrawClr(Drawable * drwbl);
+		void setDrawClr(Surface * surface);
 		T data;
 	};
 	

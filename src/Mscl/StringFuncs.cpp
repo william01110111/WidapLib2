@@ -1,5 +1,5 @@
 
-#include "../h/StringFuncs.h"
+#include "../../h/Mscl/StringFuncs.h"
 
 namespace widap
 {

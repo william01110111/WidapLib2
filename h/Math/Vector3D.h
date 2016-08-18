@@ -53,7 +53,7 @@ public:
 	T area() {return x*y*z;}
 	
 	//returns this vector with a length of 1
-	V3 normalize()
+	V3 normalized()
 	{
 		T dvdr=dst();
 		return Vctr3(x/dvdr, y/dvdr, z/dvdr);

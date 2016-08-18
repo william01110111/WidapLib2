@@ -1,22 +1,16 @@
-#include "../h/WindowBase.h"
+
+#include "../../h/Graphics/InputSource.h"
 
 namespace widap
 {
 
-WindowBase::WindowBase()
+InputSource::InputSource()
 {
 	resetVars();
 }
 
-WindowBase::~WindowBase()
+void InputSource::resetVars()
 {
-	
-}
-
-void WindowBase::resetVars()
-{
-	name="[unnamed window]";
-	dim.zero();
 	mouseLocation.zero();
 	mouseLocDlta.zero();
 	mouseLClick=0;
@@ -32,20 +26,10 @@ void WindowBase::resetVars()
 	superDwnBool=0;
 	keyPressNum=0;
 	keyPressListPos=0;
-	frameTime=1.0/60.0;
-	windowHasFocus=0;
-	windowIsOpen=0;
 }
 
-bool WindowBase::nextFrame()
-{
-	refreshDisplay();
-	timer.waitUntil(frameTime);
-	updateInput();
-	return windowIsOpen;
-}
 
-char WindowBase::nextKey()
+char InputSource::nextKey()
 {
 	if (keyPressListPos<keyPressNum)
 	{
@@ -59,7 +43,7 @@ char WindowBase::nextKey()
 	}
 }
 
-char WindowBase::lastKey()
+char InputSource::lastKey()
 {
 	if (keyPressNum)
 	{
@@ -72,4 +56,5 @@ char WindowBase::lastKey()
 }
 
 }
+
 

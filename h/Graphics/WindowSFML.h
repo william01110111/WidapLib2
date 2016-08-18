@@ -11,7 +11,7 @@
 */
 
 #include "WindowBase.h"
-#include "Error.h"
+#include "../Mscl/Error.h"
 #include <SFML/Graphics.hpp>
 
 namespace widap
@@ -41,7 +41,7 @@ public:
 	void updateInput();
 	
 	
-	///from Drawable
+	///from Surface
 	
 	USING_DRAWABLE;
 	
@@ -62,7 +62,7 @@ public:
 	//set the draw color with a ClrBGR and alpha value
 	void setDrawClr(ClrBGR clrIn, double alphaIn);
 	
-	//fills the Drawable with the predefined color
+	//fills the Surface with the predefined color
 	virtual void clear();
 	
 	//draw a rectangle with the preset draw color
@@ -77,17 +77,17 @@ public:
 	//draw a line
 	void line(V2d start, V2d end, double thickness);
 	
-	//draw a drawable
-	void drawable(Drawable * other, V2d pos, double alphaIn);
+	//draw a surface
+	void surface(Surface * other, V2d pos, double alphaIn);
 	
 	Type getType() {return WINDOW_SFML;}
 	
 	
 	///other
 	
-	//draw an image onto the window (is used by drawable(), so that works just as well)
+	//draw an image onto the window (is used by surface(), so that works just as well)
 	//pointer type must be to an image
-	void image(Drawable * img, V2d pos, double alphaIn);
+	void image(Surface * img, V2d pos, double alphaIn);
 	
 private:
 	

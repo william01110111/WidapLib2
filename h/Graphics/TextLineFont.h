@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TextBase.h"
-#include "Drawable.h"
+#include "Surface.h"
 
 namespace widap
 {
@@ -9,7 +9,7 @@ namespace widap
 class TextLineFont : public TextBase
 {
 public:
-	TextLineFont(Drawable * drwblIn);
+	TextLineFont(Surface * surfaceIn);
 	
 	
 	/** ||| **/ static constexpr double LINE_THICKNESS_RATEO=0.03; // the thickness of the lines that make up the glyphs relative to the height
@@ -17,7 +17,7 @@ public:
 	/// If you get an error here, it probably means your not using C++ 11, which you should be
 	
 protected:
-	Drawable * drwbl; // the drawable that the text will be drawn to
+	Surface * surface; // the surface that the text will be drawn to
 	void renderGlyph(char c);
 	
 private:

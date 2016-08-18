@@ -1,5 +1,5 @@
-#include "../h/ImageBase.h"
-#include "../h/SimpMath.h"
+#include "../../h/Graphics/ImageBase.h"
+#include "../../h/Math/SimpMath.h"
 
 namespace widap
 {
@@ -447,7 +447,7 @@ void ImageBase::line(V2d start, V2d end)
 }
 */
 
-void ImageBase::drawable(Drawable * other, V2d pos, double alphaIn)
+void ImageBase::surface(Surface * other, V2d pos, double alphaIn)
 {
 	//draw a rectangle with an X as default implementation
 	setDrawClr(1, alphaIn);

@@ -1,5 +1,5 @@
-#include "../h/TextLineFont.h"
-#include "../h/SimpMath.h"
+#include "../../h/Graphics/TextLineFont.h"
+#include "../../h/Math/SimpMath.h"
 
 namespace widap
 {
@@ -1711,7 +1711,7 @@ void TextLineFont::init()
 	
 }
 
-TextLineFont::TextLineFont(Drawable * drwblIn)
+TextLineFont::TextLineFont(Surface * surfaceIn)
 {
 	if (!hasInited)
 	{
@@ -1719,7 +1719,7 @@ TextLineFont::TextLineFont(Drawable * drwblIn)
 		hasInited=1;
 	}
 	
-	drwbl=drwblIn;
+	surface=surfaceIn;
 	widthRateo=0.5;
 }
 
@@ -1727,11 +1727,11 @@ void TextLineFont::renderGlyph(char c)
 {
 	if (bkndAlpha>0.0)
 	{
-		bkndClr->setDrawClr(drwbl);
+		bkndClr->setDrawClr(surface);
 		if (drawAlpha!=1)
-			drwbl->setDrawAlpha(bkndAlpha);
+			surface->setDrawAlpha(bkndAlpha);
 		
-		drwbl->rect(V2d(pos.x+offset, pos.y-dim.y), V2d(pos.x+offset+dim.x, pos.y));
+		surface->rect(V2d(pos.x+offset, pos.y-dim.y), V2d(pos.x+offset+dim.x, pos.y));
 	}
 	
 	double lineThick;
@@ -1748,14 +1748,14 @@ void TextLineFont::renderGlyph(char c)
 	else
 		lineThick=max(dim.y*LINE_THICKNESS_RATEO, 1.0);
 	
-	drawClr->setDrawClr(drwbl);
+	drawClr->setDrawClr(surface);
 	if (drawAlpha!=1)
-		drwbl->setDrawAlpha(drawAlpha);
+		surface->setDrawAlpha(drawAlpha);
 	
 	for (int j=0; j<fontData[(int)c].lineNum; ++j)
-		drwbl->line(floor(fontData[(int)c].lines[0][j]*glyphDim+loc), floor(fontData[(int)c].lines[1][j]*glyphDim+loc), lineThick);
+		surface->line(floor(fontData[(int)c].lines[0][j]*glyphDim+loc), floor(fontData[(int)c].lines[1][j]*glyphDim+loc), lineThick);
 	
-	//drwbl->rect(loc, loc+glyphDim);
+	//surface->rect(loc, loc+glyphDim);
 }
 
 }

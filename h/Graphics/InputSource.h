@@ -1,23 +1,17 @@
 
 #pragma once
 
-#include "Drawable.h"
-#include "../h/Error.h"
-#include "../h/Timer.h"
-#include <string>
-using std::string;
+#include "../Math/Vector2D.h"
 
 namespace widap
 {
 
-class WindowBase : public Drawable
+class InputSource
 {
 public:
 	
-	WindowBase();
-	virtual ~WindowBase();
-	
-	V2u getDim() {return dim;}
+	InputSource();
+	virtual ~InputSource() {}
 	
 	char nextKey();	//get the next key that was pressed
 		//0 is returned once when the end of the list is reached, then it starts over; you can cycle through as many times as you want
@@ -50,41 +44,13 @@ public:
 	//get the mouse scroll as a number, 0 is no scroll, + is up, negative is down
 	int scroll() {return mouseScroll;}
 	
-	//return if this window has focus
-	bool hasFocus() {return windowHasFocus;}
-	
-	//return if this window is open
-	bool isOpen() {return windowIsOpen;}
-	
-	//retrieve the name of the window
-	string getName() {return name;}
-	
-	//set the frame time both in delay per frame and FPS
-	void setFrameTime(double frameTimeIn) {frameTime=frameTimeIn;}
-	void setFPS(double fpsIn) {frameTime=1.0/fpsIn;}
-	
-	//open the window, if dimensions are (0, 0) it will be full screen, (0, 1) is maximized 
-	virtual void open(V2u dimIn, string nameIn)=0;
-	
-	//display any changes to the window
-	virtual void refreshDisplay()=0;
-	
 	//update the input
 	virtual void updateInput()=0;
-	
-	//display the frame, wait until the frame time is done then update input and return if the window is still open
-	bool nextFrame();
-	
-	//close the window
-	virtual void close()=0;
 	
 protected:
 	
 	//zeros out vars
 	void resetVars();
-	
-	string name;
-	V2u dim; //the dimensions of the window
 	
 	V2i mouseLocation; //the location of the mouse
 	V2i mouseLocDlta; //how much the mouse has moved
@@ -98,14 +64,6 @@ protected:
 	char keyPresses[MAX_KEY_PRESSES]; //a list of key presses, 256 is the max number there can be in a single cycle
 	int keyPressNum; //how long the above list is
 	int keyPressListPos; //cycles between 0 and keyPressNum as nextKey is called
-	
-	bool windowHasFocus;
-	bool windowIsOpen;
-	
-	double frameTime;
-	Timer timer;
-	
-	Error err; //the object for reporting errors
 };
 
 }

@@ -53,7 +53,7 @@ public:
 	T area() {return x*y;}
 	
 	//returns this vector with a length of 1
-	V2 normalize()
+	V2 normalized()
 	{
 		T dvdr=dst();
 		return V2(x/dvdr, y/dvdr);

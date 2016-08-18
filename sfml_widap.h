@@ -1,4 +1,4 @@
 #pragma once
 
-#include "h/WindowBase.h"
-#include "h/WindowSFML.h"
+#include "h/Graphics/WindowBase.h"
+#include "h/Graphics/WindowSFML.h"

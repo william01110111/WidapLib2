@@ -1,36 +1,36 @@
 #pragma once
 
-#include "Vector2D.h"
+#include "../Math/Vector2D.h"
 #include "Color.h"
 #include "TextBase.h"
 
 #include <string>
 using std::string;
 
-///this declares the Drawable superclass that you can draw to
+///this declares the Surface superclass that you can draw to
 
 namespace widap
 {
 
-class Drawable
+class Surface
 {
 	//put USING_DRAWABLE somewhere in the header of subclasses to get access to all the functions
 	//any function that is overloaded with some versions virtual and others not must go here
 	
 	#define USING_DRAWABLE			\
-		using Drawable::setDrawClr;	\
-		using Drawable::clear;		\
-		using Drawable::rect;		\
-		using Drawable::circle;		\
-		using Drawable::tri;		\
-		using Drawable::line;		\
-		using Drawable::drawable	\
+		using Surface::setDrawClr;	\
+		using Surface::clear;		\
+		using Surface::rect;		\
+		using Surface::circle;		\
+		using Surface::tri;		\
+		using Surface::line;		\
+		using Surface::surface	\
 		
 	
 public:
 	
-	Drawable();
-	~Drawable();
+	Surface();
+	~Surface();
 	
 	///virtual functions
 	
@@ -65,7 +65,7 @@ public:
 	
 	///shape pure virtual functions
 	
-	//fills the Drawable with the predefined color
+	//fills the Surface with the predefined color
 	virtual void clear()=0;
 	
 	//draw a rectangle with the preset draw color
@@ -80,8 +80,8 @@ public:
 	//draw a line
 	virtual void line(V2d start, V2d end, double thick)=0;
 	
-	//draw another drawable, this will only work if the specific combination of types has been implemented
-	virtual void drawable(Drawable * other, V2d pos, double alphaIn)=0;
+	//draw another surface, this will only work if the specific combination of types has been implemented
+	virtual void surface(Surface * other, V2d pos, double alphaIn)=0;
 	
 	
 	///mscl
@@ -187,16 +187,16 @@ public:
 		line(start, end, thickness);
 	}
 	
-	//drawable
+	//surface
 	
-	void drawable(Drawable * other, V2d pos)
+	void surface(Surface * other, V2d pos)
 	{
-		drawable(other, pos, 1);
+		surface(other, pos, 1);
 	}
 	
-	void drawable(Drawable * other)
+	void surface(Surface * other)
 	{
-		drawable(other, V2d(), 1);
+		surface(other, V2d(), 1);
 	}
 	
 	//poly
@@ -222,8 +222,10 @@ public:
 	TextBase * text() {return textPtr;}
 	void text(char c);
 	void text(string s);
-	template <typename T> void text(string s, V2d posIn, double heightIn, T clrIn, double alphaIn=1) {textPtr->draw(s, posIn, heightIn, clrIn, alphaIn);}
-	
+	template <typename T> void text(string s, V2d posIn, double heightIn, T clrIn, double alphaIn=1)
+	{
+		textPtr->draw(s, posIn, heightIn, clrIn, alphaIn);
+	}
 	
 	///type id
 	

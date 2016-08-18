@@ -1,15 +1,15 @@
 
 #pragma once
 
-#include "Vector2D.h"
-#include "Drawable.h"
+#include "../Math/Vector2D.h"
+#include "Surface.h"
 #include <string>
 
 namespace widap
 {
 
-//the virtual base class for images, does not implement drawable but most subclasses will
-class ImageBase : public Drawable
+//the virtual base class for images, does not implement surface but most subclasses will
+class ImageBase : public Surface
 {
 public:
 	//create a new image of the given size
@@ -36,7 +36,7 @@ public:
 	//sets the given pixel to the predefined color, probably better to use set(int, int) for speed ans this is just a rapper
 	void set(V2i loc);
 	
-	//fills the Drawable with the predefined color
+	//fills the Surface with the predefined color
 	virtual void clear();
 	
 	//draw a rectangle with the preset draw color
@@ -51,8 +51,8 @@ public:
 	//draw a line
 	virtual void line(V2d start, V2d end, double thick);
 	
-	//draw another drawable, this will only work if the specific combination of types has been implemented
-	virtual void drawable(Drawable * other, V2d pos, double alphaIn);
+	//draw another surface, this will only work if the specific combination of types has been implemented
+	virtual void surface(Surface * other, V2d pos, double alphaIn);
 };
 
 }

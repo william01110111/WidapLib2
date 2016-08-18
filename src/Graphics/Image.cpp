@@ -1,9 +1,7 @@
-#include "../h/Image.h"
-#include "../h/SimpMath.h"
-#include "../h/StringFuncs.h"
-#include "../h/TextBase.h"
-#include "../h/TextLineFont.h"
-#include "../h/Error.h"
+#include "../../h/Graphics/Image.h"
+#include "../../h/Math/SimpMath.h"
+#include "../../h/Mscl/StringFuncs.h"
+#include "../../h/Graphics/TextLineFont.h"
 
 #include <fstream>
 
@@ -265,8 +263,8 @@ void Image::setDrawClr(ClrBGR clrIn, double alphaIn)
 	drawAlpha=alphaIn;
 }
 
-//draw a drawable
-void Image::drawable(Drawable * other, V2d pos, double alphaIn)
+//draw a surface
+void Image::surface(Surface * other, V2d pos, double alphaIn)
 {
 	switch (other->getType())
 	{
@@ -275,12 +273,12 @@ void Image::drawable(Drawable * other, V2d pos, double alphaIn)
 		break;
 		
 	default:
-		Drawable::drawable(other, pos);
+		Surface::surface(other, pos);
 	}
 }
 
 //draws an image, the pointer must be to an image type
-void Image::image(Drawable * imgIn, V2d pos, double alphaIn)
+void Image::image(Surface * imgIn, V2d pos, double alphaIn)
 {
 	V2i low=max(V2d(), pos), hgh=min((V2i)dim, (V2i)pos+imgIn->getDim()), i;
 	

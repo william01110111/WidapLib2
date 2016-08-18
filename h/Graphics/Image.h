@@ -2,10 +2,9 @@
 #pragma once
 
 #include "ImageBase.h"
-#include "Drawable.h"
-#include "Error.h"
+#include "Surface.h"
+#include "../Mscl/Error.h"
 #include "Color.h"
-#include "Vector.h"
 
 namespace widap
 {
@@ -55,7 +54,7 @@ public:
 	bool isEmpty() {return !data;}
 	
 	
-	///from Drawable
+	///from Surface
 	
 	USING_DRAWABLE;
 	
@@ -85,12 +84,12 @@ public:
 	
 	Type getType() {return IMAGE_BGR;}
 	
-	//draw a drawable
-	void drawable(Drawable * other, V2d pos, double alphaIn);
+	//draw a surface
+	void surface(Surface * other, V2d pos, double alphaIn);
 	
-	//draw an image onto the window (is used by drawable(), so that works just as well)
+	//draw an image onto the window (is used by surface(), so that works just as well)
 	//pointer type must be to an image
-	void image(Drawable * img, V2d pos, double alphaIn);
+	void image(Surface * img, V2d pos, double alphaIn);
 	
 private:
 	//this should be done by the constructor, but I was having an odd issue with constructor chaining

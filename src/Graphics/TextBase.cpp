@@ -1,8 +1,8 @@
-#include "../h/TextBase.h"
-#include "../h/Drawable.h"
-#include "../h/StringFuncs.h"
-#include "../h/SimpMath.h"
-#include "../h/Error.h"
+#include "../../h/Graphics/TextBase.h"
+#include "../../h/Graphics/Surface.h"
+#include "../../h/Mscl/StringFuncs.h"
+#include "../../h/Math/SimpMath.h"
+#include "../../h/Mscl/Error.h"
 
 namespace widap
 {
@@ -55,7 +55,7 @@ void TextBase::draw(string s)
 	}
 }
 
-template <typename T> void TextBase::ClrType<T>::setDrawClr(Drawable * drwbl) {drwbl->setDrawClr(data);}
+template <typename T> void TextBase::ClrType<T>::setDrawClr(Surface * surface) {surface->setDrawClr(data);}
 
 template class TextBase::ClrType<bool>;
 template class TextBase::ClrType<int>;
