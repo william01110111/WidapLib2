@@ -46,9 +46,6 @@ void ImageBase::rect(V2d lowD, V2d hghD)
 //draws a filled circle
 void ImageBase::circle(V2d center, double radius)
 {
-	
-	///WARNING: this function is vital for drawn lines to look right. Do not fuck it up without testing it with line()
-	
 	//radius-=0.1; //makes circles look less polygony
 	
 	V2i i, low, hgh, offset, dim, centerInt;
@@ -446,18 +443,6 @@ void ImageBase::line(V2d start, V2d end)
 	}
 }
 */
-
-void ImageBase::surface(Surface * other, V2d pos, double alphaIn)
-{
-	//draw a rectangle with an X as default implementation
-	setDrawClr(1, alphaIn);
-	rect(pos, pos+other->getDim());
-	setDrawClr(0, alphaIn);
-	line(pos+V2d(20, 20), pos+other->getDim()-V2d(20, 20), 20);
-	line(V2d(pos.x+20, pos.y+other->getDim().y-20), V2d(pos.x+other->getDim().x-20, pos.y+20), 20);
-}
-
-
 
 }
 

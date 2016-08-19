@@ -12,17 +12,12 @@ Surface::Surface()
 
 Surface::~Surface()
 {
-	delete textPtr;
+	if (textPtr)
+		delete textPtr;
 }
 
 
 ///mscl
-
-//set the draw color with a void pointer that is assumed to be of correct type for whatever this image is
-void Surface::setDrawClr(void * clrIn)
-{
-	err << "attempted to draw to a Surface with unimplemented type of void *" << err;
-}
 
 //set the draw color with an bool (black or white for color image
 void Surface::setDrawClr(bool clrIn)
@@ -48,12 +43,6 @@ void Surface::setDrawClr(ClrBGR clrIn)
 	err << "attempted to draw to a Surface with unimplemented type of ClrBGR" << err;
 }
 
-//set the draw color with a ClrBGR and alpha
-void Surface::setDrawClr(ClrBGR clrIn, double alpha)
-{
-	err << "attempted to draw to a Surface with unimplemented type of ClrBGR + alpha" << err;
-}
-
 //set the draw color with a ClrRGBA
 void Surface::setDrawClr(ClrRGBA clrIn)
 {
@@ -70,6 +59,16 @@ void Surface::setDrawClr(ClrHSL clrIn)
 void Surface::setDrawAlpha(double alphaIn)
 {
 	drawAlpha=alphaIn;
+}
+
+void Surface::surfaceWithAlphaSet(Surface * other, V2d pos)
+{
+	//draw a rectangle with an X as default implementation
+	setDrawClr(1, drawAlpha);
+	rect(pos, pos+other->getDim());
+	setDrawClr(0, drawAlpha);
+	line(pos+V2d(20, 20), pos+other->getDim()-V2d(20, 20), 20);
+	line(V2d(pos.x+20, pos.y+other->getDim().y-20), V2d(pos.x+other->getDim().x-20, pos.y+20), 20);
 }
 
 void Surface::poly(V2d * vertsIn, int vertNum)

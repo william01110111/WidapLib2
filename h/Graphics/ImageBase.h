@@ -50,9 +50,6 @@ public:
 	
 	//draw a line
 	virtual void line(V2d start, V2d end, double thick);
-	
-	//draw another surface, this will only work if the specific combination of types has been implemented
-	virtual void surface(Surface * other, V2d pos, double alphaIn);
 };
 
 }

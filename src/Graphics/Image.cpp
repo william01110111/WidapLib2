@@ -256,15 +256,8 @@ void Image::setDrawClr(ClrBGR clrIn)
 	drawAlpha=1;
 }
 
-//set the draw color with a ClrBGR and an alpha value
-void Image::setDrawClr(ClrBGR clrIn, double alphaIn)
-{
-	drawClr=clrIn;
-	drawAlpha=alphaIn;
-}
-
 //draw a surface
-void Image::surface(Surface * other, V2d pos, double alphaIn)
+void Image::surfaceWithAlphaSet(Surface * other, V2d pos, double alphaIn)
 {
 	switch (other->getType())
 	{
@@ -273,7 +266,7 @@ void Image::surface(Surface * other, V2d pos, double alphaIn)
 		break;
 		
 	default:
-		Surface::surface(other, pos);
+		Surface::surfaceWithAlphaSet(other, pos);
 	}
 }
 

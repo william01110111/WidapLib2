@@ -73,9 +73,6 @@ public:
 	//set the draw color with a ClrBGR value
 	void setDrawClr(ClrBGR clrIn);
 	
-	//set the draw color with a ClrBGR and an alpha value
-	void setDrawClr(ClrBGR clrIn, double alpha);
-	
 	//draw a rectangle with the preset draw color
 	//void rect(V2d low, V2d hgh);
 	
@@ -85,7 +82,7 @@ public:
 	Type getType() {return IMAGE_BGR;}
 	
 	//draw a surface
-	void surface(Surface * other, V2d pos, double alphaIn);
+	void surfaceWithAlphaSet(Surface * other, V2d pos, double alphaIn);
 	
 	//draw an image onto the window (is used by surface(), so that works just as well)
 	//pointer type must be to an image

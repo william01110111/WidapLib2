@@ -3,7 +3,7 @@
 
 #include "../Graphics/Surface.h"
 #include "InputSource.h"
-#include "../../../WidapChess/Error.h"
+#include "../Mscl/Error.h"
 #include "../Mscl/Timer.h"
 #include <string>
 using std::string;
@@ -35,6 +35,8 @@ public:
 	
 	//open the window, if dimensions are (0, 0) it will be full screen, (0, 1) is maximized 
 	virtual void open(V2u dimIn, string nameIn)=0;
+	void openFullScreen(string nameIn) {open({0, 0}, nameIn);}
+	void openMaximized(string nameIn) {open({0, 1}, nameIn);}
 	
 	//display any changes to the window
 	virtual void refreshDisplay()=0;

@@ -59,9 +59,6 @@ public:
 	//set the draw color with a ClrBGR value
 	void setDrawClr(ClrBGR clrIn);
 	
-	//set the draw color with a ClrBGR and alpha value
-	void setDrawClr(ClrBGR clrIn, double alphaIn);
-	
 	//fills the Surface with the predefined color
 	virtual void clear();
 	
@@ -78,7 +75,7 @@ public:
 	void line(V2d start, V2d end, double thickness);
 	
 	//draw a surface
-	void surface(Surface * other, V2d pos, double alphaIn);
+	void surfaceWithAlphaSet(Surface * other, V2d pos);
 	
 	Type getType() {return WINDOW_SFML;}
 	

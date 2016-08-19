@@ -37,31 +37,14 @@ public:
 	virtual V2u getDim()=0;
 	
 	//you only have to implement the setDrawClr funcs you want, if you try to use one you don't implement a runtime error will be called
+	//it wouldn't work to use a template because then if you define specific actions for specific types it wouldn't work when passing a Surface pointer
 	
-	//set the draw color with a void pointer that is assumed to be of correct type for whatever this image is
-	virtual void setDrawClr(void * clrIn);
-	
-	//set the draw color with an bool (black or white for color image
 	virtual void setDrawClr(bool clrIn);
-	
-	//set the draw color with a char
 	virtual void setDrawClr(char clrIn);
-	
-	//set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 	virtual void setDrawClr(int clrIn);
-	
-	//set the draw color with a ClrBGR, the most common way to draw
 	virtual void setDrawClr(ClrBGR clrIn);
-	
-	//set the draw color with a ClrBGR, plus an alpha value, also common
-	virtual void setDrawClr(ClrBGR clrIn, double alphaIn);
-	
-	//set the draw color with a ClrRGBA
 	virtual void setDrawClr(ClrRGBA clrIn);
-	
-	//set the draw color with a ClrHSL
 	virtual void setDrawClr(ClrHSL clrIn);
-	
 	
 	///shape pure virtual functions
 	
@@ -81,7 +64,7 @@ public:
 	virtual void line(V2d start, V2d end, double thick)=0;
 	
 	//draw another surface, this will only work if the specific combination of types has been implemented
-	virtual void surface(Surface * other, V2d pos, double alphaIn)=0;
+	virtual void surfaceWithAlphaSet(Surface * other, V2d pos)=0;
 	
 	
 	///mscl
@@ -90,8 +73,8 @@ public:
 	template<typename T>
 	void setDrawClr(T clrIn, double alphaIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
+		setDrawClr(clrIn);
 	}
 	
 	//just sets the alpha for drawing
@@ -106,14 +89,15 @@ public:
 	template<typename T>
 	void clear(T clrIn, double alphaIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
+		setDrawClr(clrIn);
 		clear();
 	}
 	
 	template<typename T>
 	void clear(T clrIn)
 	{
+		drawAlpha=1;
 		setDrawClr(clrIn);
 		clear();
 	}
@@ -123,14 +107,15 @@ public:
 	template<typename T>
 	void rect(V2d low, V2d hgh, T clrIn, double alphaIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
+		setDrawClr(clrIn);
 		rect(low, hgh);
 	}
 	
 	template<typename T>
 	void rect(V2d low, V2d hgh, T clrIn)
 	{
+		drawAlpha=1;
 		setDrawClr(clrIn);
 		rect(low, hgh);
 	}
@@ -140,14 +125,15 @@ public:
 	template<typename T>
 	void circle(V2d center, double radius, T clrIn, double alphaIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
+		setDrawClr(clrIn);
 		circle(center, radius);
 	}
 	
 	template<typename T>
 	void circle(V2d center, double radius, T clrIn)
 	{
+		drawAlpha=1;
 		setDrawClr(clrIn);
 		circle(center, radius);
 	}
@@ -157,14 +143,15 @@ public:
 	template<typename T>
 	void tri(V2d * vertsIn, T clrIn, double alphaIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
+		setDrawClr(clrIn);
 		tri(vertsIn);
 	}
 	
 	template<typename T>
 	void tri(V2d * vertsIn, T clrIn)
 	{
+		drawAlpha=1;
 		setDrawClr(clrIn);
 		tri(vertsIn);
 	}
@@ -174,29 +161,37 @@ public:
 	template<typename T>
 	void line(V2d start, V2d end, double thickness, T clrIn, double alphaIn)
 	{
+		drawAlpha=1;
 		setDrawClr(clrIn);
-		drawAlpha=alphaIn;
 		line(start, end, thickness);
 	}
 	
 	template<typename T>
 	void line(V2d start, V2d end, double thickness, T clrIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=1;
+		setDrawClr(clrIn);
 		line(start, end, thickness);
 	}
 	
 	//surface
 	
+	void surface(Surface * other, V2d pos, double alphaIn)
+	{
+		drawAlpha=alphaIn;
+		surfaceWithAlphaSet(other, pos);
+	}
+	
 	void surface(Surface * other, V2d pos)
 	{
-		surface(other, pos, 1);
+		drawAlpha=1;
+		surfaceWithAlphaSet(other, pos);
 	}
 	
 	void surface(Surface * other)
 	{
-		surface(other, V2d(), 1);
+		drawAlpha=1;
+		surfaceWithAlphaSet(other, V2d());
 	}
 	
 	//poly
@@ -204,8 +199,8 @@ public:
 	template<typename T>
 	void poly(V2d * vertsIn, int vertNum, T clrIn, double alphaIn)
 	{
-		setDrawClr(clrIn);
 		drawAlpha=alphaIn;
+		setDrawClr(clrIn);
 		poly(vertsIn, vertNum);
 	}
 	

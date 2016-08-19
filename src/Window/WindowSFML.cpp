@@ -6,7 +6,7 @@
 namespace widap
 {
 
-bool WindowSFML::firstInstance=1;
+bool WindowSFML::firstInstance=true;
 //sf::Font WindowSFML::font;
 char WindowSFML::key2char[127];
 
@@ -104,8 +104,11 @@ void WindowSFML::open(V2u dimIn, string nameIn)
 			windowObj.create(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen);
 		else if (dimIn.y==1)
 		{
-			err << "requested maximized window, but SFML doesn't support that so making it 640x480" << err;
-			windowObj.create(sf::VideoMode(640, 480), name);
+			err << "requested maximized window, but SFML doesn't support that so making it a bit smaller then the screen" << err;
+			sf::VideoMode mode=sf::VideoMode::getDesktopMode();
+			double wo=0.02, ho=0.12;
+			windowObj.create(sf::VideoMode(mode.width*(1-wo), mode.height*(1-ho)), name);
+			windowObj.setPosition(sf::Vector2i(mode.width*wo*0.5, mode.height*ho*0.2));
 		}
 	}
 	
@@ -122,7 +125,17 @@ void WindowSFML::open(V2u dimIn, string nameIn)
 //close the window
 void WindowSFML::close()
 {
-	windowObj.close();
+	/** ||| **/
+	/** VVV **/ windowObj.close();
+	/// If you get an error here, probably you've not linked to the sfml libraries
+	//you must put the following lines into linker options to use sfml window
+	/*
+
+-lsfml-graphics
+-lsfml-window
+-lsfml-system
+
+	*/
 }
 
 //repaint the window
@@ -322,16 +335,7 @@ void WindowSFML::setDrawClr(ClrRGBA clrIn)
 void WindowSFML::setDrawClr(ClrBGR clrIn)
 {
 	drawClr=clrIn;
-	drawAlpha=1;
 }
-
-//set the draw color with a ClrBGR and alpha value
-void WindowSFML::setDrawClr(ClrBGR clrIn, double alphaIn)
-{
-	drawClr=clrIn;
-	drawAlpha=alphaIn;
-}
-
 
 //fills the entire window with a single color
 
@@ -397,16 +401,16 @@ void WindowSFML::line(V2d a, V2d b, double thickness)
 }
 
 //draw a surface
-void WindowSFML::surface(Surface * other, V2d pos, double alphaIn)
+void WindowSFML::surfaceWithAlphaSet(Surface * other, V2d pos)
 {
 	switch (other->getType())
 	{
 	case IMAGE_BGR:
-		image((Image *)other, pos, alphaIn);
+		image((Image *)other, pos, drawAlpha);
 		break;
 		
 	default:
-		Surface::surface(other, pos);
+		Surface::surfaceWithAlphaSet(other, pos);
 	}
 }
 
