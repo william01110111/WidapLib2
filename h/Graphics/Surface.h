@@ -12,6 +12,8 @@ using std::string;
 namespace widap
 {
 
+class ChildSurface;
+
 class Surface
 {
 	//put USING_SURFACE somewhere in the header of subclasses to get access to all the functions
@@ -24,7 +26,6 @@ class Surface
 		using Surface::circle;		\
 		using Surface::tri;			\
 		using Surface::line;		\
-		using Surface::surface		\
 		
 	
 public:
@@ -81,6 +82,11 @@ public:
 	void setDrawAlpha(double alphaIn);
 	
 	void poly(V2d * vertsIn, int vertNum);
+	
+	//create a new child surface, YOU MUST DELETE IT!
+	virtual ChildSurface * newChildSurface(V2d pos, V2u dim);
+	ChildSurface * newChildSurface() {return newChildSurface(V2d(), getDim());}
+	
 	
 	///shapes:
 	

@@ -1,4 +1,6 @@
 #include "../../h/Graphics/Surface.h"
+#include "../../h/Graphics/ChildSurface.h"
+#include "../../h/Graphics/QueuedSurface.h"
 #include "../../h/Mscl/Error.h"
 #include "../../h/Math/ComplexMath.h"
 
@@ -69,6 +71,11 @@ void Surface::surfaceWithAlphaSet(Surface * other, V2d pos)
 	setDrawClr(0, drawAlpha);
 	line(pos+V2d(20, 20), pos+other->getDim()-V2d(20, 20), 20);
 	line(V2d(pos.x+20, pos.y+other->getDim().y-20), V2d(pos.x+other->getDim().x-20, pos.y+20), 20);
+}
+
+ChildSurface * Surface::newChildSurface(V2d pos, V2u dim)
+{
+	return new QueuedSurface(this, pos, dim);
 }
 
 void Surface::poly(V2d * vertsIn, int vertNum)

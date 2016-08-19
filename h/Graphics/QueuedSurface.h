@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ChildSurface.h"
 #include <list>
 
@@ -17,8 +19,6 @@ public:
 	
 	void setParent(Surface * surfaceIn);
 	void setParent(Surface * surfaceIn, V2d posIn, V2u dimIn);
-	
-	V2u getDim() {return dim;}
 	
 	void textInit();
 	
@@ -46,6 +46,8 @@ public:
 	
 	//draw another surface, this will only work if the specific combination of types has been implemented
 	void surfaceWithAlphaSet(Surface * other, V2d pos);
+	
+	void setDim(V2u dimIn) {dim=dimIn;}
 	
 	void draw();
 	
