@@ -52,6 +52,9 @@ public:
 	//return the area, or x*y
 	T area() {return x*y;}
 	
+	//return if this vector is in the rectangle created by the other two vectors
+	bool isInRect(const V2& low, const V2& hgh) {return x>low.x && y>low.y && x<hgh.x && y<hgh.y;}
+	
 	//returns this vector with a length of 1
 	V2 normalized()
 	{

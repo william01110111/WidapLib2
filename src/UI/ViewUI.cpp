@@ -5,10 +5,18 @@
 namespace widap
 {
 
-/*ViewUI::setParent(ContainerViewUI * parentIn)
+void ViewUI::calcSizes()
 {
-	
-}*/
+	if (!parent)
+	{
+		low=V2d();
+		
+		if (surface)
+			hgh=surface->getDim();
+		else
+			hgh=V2d();
+	}
+}
 
 }
 
