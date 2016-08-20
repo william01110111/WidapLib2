@@ -17,6 +17,8 @@ public:
 	QueuedSurface(Surface * surfaceIn): ChildSurface(surfaceIn) {}
 	QueuedSurface(Surface * surfaceIn, V2d posIn, V2u dimIn): ChildSurface(surfaceIn, posIn, dimIn) {}
 	
+	~QueuedSurface() {}
+	
 	void setParent(Surface * surfaceIn);
 	void setParent(Surface * surfaceIn, V2d posIn, V2u dimIn);
 	

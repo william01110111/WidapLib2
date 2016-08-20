@@ -4,6 +4,7 @@
 #include "../Graphics/Surface.h"
 #include "../Window/InputSource.h"
 #include "../Window/WindowBase.h"
+#include "ConstraintsUI.h"
 
 namespace widap
 {
@@ -21,7 +22,7 @@ public:
 	void setWindow(WindowBase * windowIn) {surface=windowIn; input=windowIn;}
 	
 	
-	//recalculate the size of all subviews
+	//recalculate the size of all subviews and sets constraints
 	virtual void calcSizes();
 	
 	//draws it to the surface inside the rectangle
@@ -36,7 +37,9 @@ protected:
 	Surface * surface=nullptr;
 	InputSource * input=nullptr;
 	
-	//the rectangle where it will be drawn and get input, set by the parent
+	ConstraintsUI constraints;
+	
+	//the rectangle where it will be drawn and get input, set by the parent, which is influenced by the constraints
 	V2d low, hgh;
 	
 	ContainerViewUI * parent=nullptr;

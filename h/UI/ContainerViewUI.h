@@ -11,17 +11,12 @@ class ContainerViewUI: public ViewUI
 {
 public:
 	
-	struct ChildView
-	{
-		V2d low, hgh;
-		ViewUI * view;
-	};
-	
-	void removeChild(ViewUI * viewIn);
+	void addChild(ViewUI * childIn);
+	void removeChild(ViewUI * childIn);
 	
 protected:
 	
-	std::vector<ChildView> children;
+	std::vector<ViewUI *> children;
 };
 
 }
