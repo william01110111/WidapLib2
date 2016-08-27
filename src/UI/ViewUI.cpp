@@ -5,17 +5,37 @@
 namespace widap
 {
 
-void ViewUI::calcSizes()
+void ViewUI::setRect(const V2d& lowIn, const V2d& hghIn)
 {
-	if (!parent)
+	low=lowIn;
+	hgh=hghIn;
+}
+
+void ViewUI::setDim(const V2d& in)
+{
+	//if (dim!=in)
 	{
-		low=V2d();
+		dim=in;
 		
-		if (surface)
-			hgh=surface->getDim();
+		if (parent)
+			parent->calcDim();
 		else
-			hgh=V2d();
+		{
+			if (surface)
+			{
+				setRect(V2d(), surface->getDim());
+			}
+			else
+			{
+				setRect(V2d(), V2d());
+			}
+		}
 	}
+}
+
+void ViewUI::calcDim()
+{
+	setDim(V2d(500, 700));
 }
 
 }

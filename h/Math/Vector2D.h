@@ -63,7 +63,7 @@ public:
 	}
 	
 	//returns each component clamped
-	V2 clamp(V2 low, V2 hgh)
+	V2 clamp(const V2& low, const V2& hgh)
 	{
 		return V2
 		(
@@ -72,7 +72,7 @@ public:
 		);
 	}
 	
-	//returns the minimum of each component
+	//returns vector that is the minimum of each component
 	V2 min(V2 in)
 	{
 		return V2
@@ -82,13 +82,23 @@ public:
 		);
 	}
 	
-	//sets vector to the maximum of each component
+	//returns vector that is the maximum of each component
 	V2 max(V2 in)
 	{
 		return V2
 		(
 			x<in.x?in.x:x,
 			y<in.y?in.y:y
+		);
+	}
+	
+	//returns the absolute value of each component
+	V2 abs()
+	{
+		return V2
+		(
+			x>=0?x:-x,
+			y>=0?y:-y
 		);
 	}
 	
@@ -157,6 +167,8 @@ public:
 	void operator/= (V2<U> in) {x/=in.x; y/=in.y;}
 	
 };
+typedef V2<bool> V2b;
+typedef V2<char> V2c;
 typedef V2<int> V2i;
 typedef V2<unsigned int> V2u;
 typedef V2<double> V2d;

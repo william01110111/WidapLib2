@@ -1,8 +1,7 @@
 #include "../../h/Graphics/TextBase.h"
 #include "../../h/Graphics/Surface.h"
-#include "../../h/Mscl/StringFuncs.h"
+//#include "../../h/Mscl/StringFuncs.h"
 #include "../../h/Math/SimpMath.h"
-#include "../../h/Mscl/Error.h"
 
 namespace widap
 {
@@ -45,6 +44,37 @@ void TextBase::draw(char c)
 		offset+=dim.x;
 		break;
 	}
+}
+
+V2d TextBase::getDim(string s, double heightIn)
+{
+	V2d out(0, heightIn), dim(heightIn*widthRateo, heightIn);
+	double offset=0;
+	
+	for (unsigned i=0; i<s.length(); ++i)
+	{
+		switch (s[i])
+		{
+			
+		case '\n': //newline
+			out.y+=dim.y;
+			out.x=max(offset, out.x);
+			offset=0;
+			break;
+			
+		case '\t': //tab
+			offset=(floor(offset/(dim.x*TAB_CHARS))+1)*dim.x*TAB_CHARS;
+			break;
+			
+		default: //any other character
+			offset+=dim.x;
+			break;
+		}
+	}
+	
+	out.x=max(offset, out.x);
+	
+	return out;
 }
 
 void TextBase::draw(string s)

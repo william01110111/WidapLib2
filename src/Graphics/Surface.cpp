@@ -148,8 +148,5 @@ void Surface::poly(V2d * vertsIn, int vertNum)
 
 //void Surface::setTextBold(bool boldIn) {textPtr->setBold(boldIn);}
 
-void Surface::text(char c) {textPtr->draw(c);}
-
-void Surface::text(string s) {textPtr->draw(s);}
 
 }

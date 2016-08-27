@@ -221,12 +221,7 @@ public:
 	///text
 	
 	TextBase * text() {return textPtr;}
-	void text(char c);
-	void text(string s);
-	template <typename T> void text(string s, V2d posIn, double heightIn, T clrIn, double alphaIn=1)
-	{
-		textPtr->draw(s, posIn, heightIn, clrIn, alphaIn);
-	}
+	
 	
 	///type id
 	

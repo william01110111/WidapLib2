@@ -7,7 +7,13 @@ struct ConstraintUI
 {
 public:
 	
+	//if this constraint is active
 	bool on;
+	
+	//if it is a rateo of the parent view, otherwise it is assumed to be in pixels (not valid for every value)
+	bool relative;
+	
+	//the value of this constraint
 	double val;
 	
 	ConstraintUI()
@@ -20,6 +26,18 @@ public:
 	{
 		on=true;
 		val=valIn;
+	}
+	
+	double get(double base)
+	{
+		if (relative)
+		{
+			return val*base;
+		}
+		else
+		{
+			return val;
+		}
 	}
 	
 	operator bool()
@@ -45,7 +63,8 @@ public:
 
 struct ConstraintsUI
 {
-	ConstraintUI left, right, top, btm;
+	ConstraintUI left, right, btm, top;
+	ConstraintUI rightSpace, topSpace;
 	ConstraintUI centerX, centerY;
 	ConstraintUI width, height;
 	ConstraintUI aspectRatio;

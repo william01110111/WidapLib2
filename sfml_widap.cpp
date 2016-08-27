@@ -8,5 +8,7 @@
 -lsfml-system
 */
 
+/*
 #include "src/WindowBase.cpp"
 #include "src/WindowSFML.cpp"
+*/

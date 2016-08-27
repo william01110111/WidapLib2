@@ -45,7 +45,6 @@ public:
 		drawClr=new ClrType<T>(clrIn);
 	}
 	
-	void draw(char c);
 	void draw(string s);
 	
 	template <typename T> void draw(string s, V2d posIn, double heightIn, T clrIn, double alphaIn=1)
@@ -54,9 +53,13 @@ public:
 		draw(s);
 	}
 	
+	//returns the dimensions of the rectangle the string would take up, taking into account newlines and tabs
+	V2d getDim(string s, double heightIn);
+	V2d getDim(string s) {return getDim(s, dim.y);}
+	
 protected:
 	static const int TAB_CHARS=4; //max characters in a tab, min is 1
-	double widthRateo; //should be set by the constructor, what width is relative to height
+	double widthRateo=1; //should be set by the constructor, what width is relative to height
 	V2d dim; //the width and height in pixels of a character
 	V2d pos; //the current y position of the top of the text line and the left margin x position
 	double offset; //the x offset in pixels from basePos of the left side of the next character
@@ -83,6 +86,8 @@ private:
 		void setDrawClr(Surface * surface);
 		T data;
 	};
+	
+	void draw(char c);
 	
 protected:
 	
