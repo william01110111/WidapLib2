@@ -9,6 +9,15 @@ struct ClrRGBA;
 //the standard color struct, in the original Widap library the exact same struct was called RGBpix because thats not confusing at all
 struct ClrBGR
 {
+	ClrBGR() {}
+	
+	ClrBGR(unsigned char rIn, unsigned char gIn, unsigned char bIn)
+	{
+		r=rIn;
+		g=gIn;
+		b=bIn;
+	}
+	
 	unsigned char b;
 	unsigned char g;
 	unsigned char r;
@@ -22,6 +31,16 @@ inline ClrBGR clr(unsigned char r, unsigned char g, unsigned char b) {return {b,
 
 struct ClrRGBA
 {
+	ClrRGBA() {}
+	
+	ClrRGBA(unsigned char rIn, unsigned char gIn, unsigned char bIn, unsigned char aIn)
+	{
+		r=rIn;
+		g=gIn;
+		b=bIn;
+		a=aIn;
+	}
+	
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;

@@ -11,56 +11,55 @@ namespace widap
 {
 
 template<typename T>
-class V3 : public V<T> //vector 3D
+class V3 //vector 3D
 {
 public:
 	
 	T x, y, z;
 	
-	
 	///constructors
 	
 	//default constructor
-	V3() {x=0; y=0; z=0;}
+	inline V3() {x=0; y=0; z=0;}
 	
 	//copy constructor
-	V3(const V2<T>& in) {x=in.x; y=in.y; z=in.z;}
+	inline V3(const V2<T>& in) {x=in.x; y=in.y; z=in.z;}
 	
 	//constructor with a single value
-	V3(T in) {x=in; y=in; z=in;}
+	inline V3(T in) {x=in; y=in; z=in;}
 	
 	//constructor with values
-	V3(T xIn, T yIn, T zIn) {x=xIn; y=yIn; z=zIn;}
+	inline V3(T xIn, T yIn, T zIn) {x=xIn; y=yIn; z=zIn;}
 	
-	V3<T> copy() {return V3<T>(x, y, z);}
+	inline V3<T> copy() {return V3<T>(x, y, z);}
 	
 	
 	///mscl
 	
 	//set vars to zero
-	void zero() {x=0; y=0; z=0;}
+	inline void zero() {x=0; y=0; z=0;}
 	
 	//distance from the origin to this point
-	double dst() {return sqrt(x*x+y*y+z*z);}
+	inline double dst() {return sqrt(x*x+y*y+z*z);}
 	
 	//distance to another point
-	double dst(V3<T> in) {return sqrt((x-in.x)*(x-in.x)+(y-in.y)*(y-in.y))+(z-in.z)*(z-in.z);}
+	inline double dst(V3<T> in) {return sqrt((x-in.x)*(x-in.x)+(y-in.y)*(y-in.y))+(z-in.z)*(z-in.z);}
 	
 	//simply return the distance squared
-	double dstSquared() {return x*x+y*y+z*z;}
+	inline double dstSquared() {return x*x+y*y+z*z;}
 	
 	//return the area, or x*y
-	T area() {return x*y*z;}
+	inline T area() {return x*y*z;}
 	
 	//returns this vector with a length of 1
-	V3 normalized()
+	inline V3 normalized()
 	{
 		T dvdr=dst();
 		return Vctr3(x/dvdr, y/dvdr, z/dvdr);
 	}
 	
 	//returns each component clamped
-	V3 clamp(V3 low, V3 hgh)
+	inline V3 clamp(V3 low, V3 hgh)
 	{
 		return V3
 		(
@@ -71,7 +70,7 @@ public:
 	}
 	
 	//returns the minimum of each component
-	V3 min(V3 in)
+	inline V3 min(V3 in)
 	{
 		return V3
 		(
@@ -82,7 +81,7 @@ public:
 	}
 	
 	//sets vector to the maximum of each component
-	V3 max(V3 in)
+	inline V3 max(V3 in)
 	{
 		return V3
 		(
@@ -95,71 +94,71 @@ public:
 	
 	///convert to 2D
 	
-	V2<T> xy() {return V2<T>(x, y);}
-	V2<T> xz() {return V2<T>(x, z);}
-	V2<T> yz() {return V2<T>(y, z);}
-	V2<T> zy() {return V2<T>(z, y);}
+	inline V2<T> xy() {return V2<T>(x, y);}
+	inline V2<T> xz() {return V2<T>(x, z);}
+	inline V2<T> yz() {return V2<T>(y, z);}
+	inline V2<T> zy() {return V2<T>(z, y);}
 	
 	
 	///casting
 	
 	template<typename U>
-	operator V3<U>() {return V3<U>(x, y, z);}
+	inline operator V3<U>() {return V3<U>(x, y, z);}
 	
-	operator bool() {return ((bool)x || (bool)y || (bool)z);}
+	inline operator bool() {return ((bool)x || (bool)y || (bool)z);}
 	
 	template<typename U>
-	operator U(){return dst();}
+	inline operator U(){return dst();}
 	
 	
 	///other operators
 	
 	template<typename U>
-	void operator= (V3<U> in) {x=in.x; y=in.y; z=in.z;}
+	inline void operator= (V3<U> in) {x=in.x; y=in.y; z=in.z;}
 	
 	template<typename U>
-	void operator= (U in) {x=in; y=in; z=in;}
+	inline void operator= (U in) {x=in; y=in; z=in;}
 	
 	template<typename U>
-	bool operator== (V3<U> in) {return x==in.x && y==in.y && z==in.z;}
+	inline bool operator== (V3<U> in) {return x==in.x && y==in.y && z==in.z;}
 	
 	template<typename U>
-	bool operator!= (V3<U> in) {return x!=in.x || y!=in.y || z!=in.z;}
+	inline bool operator!= (V3<U> in) {return x!=in.x || y!=in.y || z!=in.z;}
 	
 	template<typename U>
-	V3<T> operator+ (V3<U> in) {return V3<T>(x+in.x, y+in.y, z+in.z);}
+	inline V3<T> operator+ (V3<U> in) {return V3<T>(x+in.x, y+in.y, z+in.z);}
 	
 	template<typename U>
-	V3<T> operator- (V3<U> in) {return V3<T>(x-in.x, y-in.y, z-in.z);}
+	inline V3<T> operator- (V3<U> in) {return V3<T>(x-in.x, y-in.y, z-in.z);}
 	
 	template<typename U>
-	V3<T> operator* (U in) {return V3<T>(x*in, y*in, z*in);}
+	inline V3<T> operator* (U in) {return V3<T>(x*in, y*in, z*in);}
 	
 	template<typename U>
-	V3<T> operator/ (U in) {return V3<T>(x/in, y/in, z/in);}
+	inline V3<T> operator/ (U in) {return V3<T>(x/in, y/in, z/in);}
 	
 	template<typename U>
-	void operator+= (V3<U> in) {x+=in.x; y+=in.y; z+=in.z;}
+	inline void operator+= (V3<U> in) {x+=in.x; y+=in.y; z+=in.z;}
 	
 	template<typename U>
-	void operator-= (V3<U> in) {x-=in.x; y-=in.y; z-=in.z;}
+	inline void operator-= (V3<U> in) {x-=in.x; y-=in.y; z-=in.z;}
 	
 	template<typename U>
-	void operator*= (U in) {x*=in; y*=in; z*=in;}
+	inline void operator*= (U in) {x*=in; y*=in; z*=in;}
 	
 	template<typename U>
-	void operator/= (U in) {x/=in; y/=in; z/=in;}
+	inline void operator/= (U in) {x/=in; y/=in; z/=in;}
 	
 	///3D math
 	
 	//dot product
-	T dot(const V3& b)
+	inline T dot(const V3& b)
 	{
 		return x*b.x+y*b.y+z*b.z;
 	}
 	
 	//cross product
-	V3<T> cross(const V3& b)
+	inline V3<T> cross(const V3& b)
 	{
 		return Vctr3(y*b.z-z*b.y, z*b.x-x*b.z, x*b.y-y*b.x);
 	}
@@ -168,7 +167,7 @@ public:
 	
 	#ifdef __Leap_h__
 	operator Leap::Vector() {return Leap::Vector(x, y, z);}
-	V3(Leap::Vector in) {x=in.x; y=in.y; z=in.z;}
+	inline V3(Leap::Vector in) {x=in.x; y=in.y; z=in.z;}
 	#endif // __Leap_h__
 	
 };

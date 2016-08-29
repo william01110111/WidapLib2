@@ -3,67 +3,66 @@
 
 #pragma once
 
-#include "Vector.h"
 #include <algorithm>
+#include <math.h>
 
 namespace widap
 {
 
 template<typename T>
-class V2 : public V<T> //vector 2D
+class V2 //vector 2D
 {
 public:
 	
 	T x, y;
 	
-	
 	///constructors
 	
 	//default constructor
-	V2() {x=0; y=0;}
+	inline V2() {x=0; y=0;}
 	
 	//copy constructor
-	V2(const V2<T>& in) {x=in.x; y=in.y;}
+	inline V2(const V2<T>& in) {x=in.x; y=in.y;}
 	
 	//constructor with a single value
 	//this causes a bunch of ambiguous calls when I want another constructor
 	//V2(T in) {x=in; y=in;}
 	
 	//constructor with values
-	V2(T xIn, T yIn) {x=xIn; y=yIn;}
+	inline V2(T xIn, T yIn) {x=xIn; y=yIn;}
 	
-	V2<T> copy() {return V2<T>(x, y);}
+	inline V2<T> copy() {return V2<T>(x, y);}
 	
 	
 	///mscl
 	
 	//set vars to zero
-	void zero() {x=0; y=0;}
+	inline void zero() {x=0; y=0;}
 	
 	//distance from the origin to this point
-	double dst() {return sqrt(x*x+y*y);}
+	inline double dst() {return sqrt(x*x+y*y);}
 	
 	//simply return the distance squared
-	double dstSquared() {return x*x+y*y;}
+	inline double dstSquared() {return x*x+y*y;}
 	
 	//distance to another point
-	double dst(V2<T> in) {return sqrt((x-in.x)*(x-in.x)+(y-in.y)*(y-in.y));}
+	inline double dst(V2<T> in) {return sqrt((x-in.x)*(x-in.x)+(y-in.y)*(y-in.y));}
 	
 	//return the area, or x*y
-	T area() {return x*y;}
+	inline T area() {return x*y;}
 	
 	//return if this vector is in the rectangle created by the other two vectors
-	bool isInRect(const V2& low, const V2& hgh) {return x>low.x && y>low.y && x<hgh.x && y<hgh.y;}
+	inline bool isInRect(const V2& low, const V2& hgh) {return x>low.x && y>low.y && x<hgh.x && y<hgh.y;}
 	
 	//returns this vector with a length of 1
-	V2 normalized()
+	inline V2 normalized()
 	{
 		T dvdr=dst();
 		return V2(x/dvdr, y/dvdr);
 	}
 	
 	//returns each component clamped
-	V2 clamp(const V2& low, const V2& hgh)
+	inline V2 clamp(const V2& low, const V2& hgh)
 	{
 		return V2
 		(
@@ -73,7 +72,7 @@ public:
 	}
 	
 	//returns vector that is the minimum of each component
-	V2 min(V2 in)
+	inline V2 min(V2 in)
 	{
 		return V2
 		(
@@ -83,7 +82,7 @@ public:
 	}
 	
 	//returns vector that is the maximum of each component
-	V2 max(V2 in)
+	inline V2 max(V2 in)
 	{
 		return V2
 		(
@@ -93,7 +92,7 @@ public:
 	}
 	
 	//returns the absolute value of each component
-	V2 abs()
+	inline V2 abs()
 	{
 		return V2
 		(
@@ -103,7 +102,7 @@ public:
 	}
 	
 	//dot product
-	T dot(const V2& b)
+	inline T dot(const V2& b)
 	{
 		return x*b.x+y*b.y;
 	}
@@ -111,60 +110,60 @@ public:
 	///casting
 	
 	template<typename U>
-	operator V2<U>() {return V2<U>(x, y);}
+	inline operator V2<U>() {return V2<U>(x, y);}
 	
-	operator bool() {return ((bool)x || (bool)y);}
+	inline operator bool() {return ((bool)x || (bool)y);}
 	
 	
 	///other operators
 	
 	template<typename U>
-	void operator= (V2<U> in) {x=in.x; y=in.y;}
+	inline void operator= (V2<U> in) {x=in.x; y=in.y;}
 	
 	template<typename U>
-	void operator= (U in) {x=in; y=in;}
+	inline void operator= (U in) {x=in; y=in;}
 	
 	template<typename U>
-	bool operator== (V2<U> in) {return x==in.x && y==in.y;}
+	inline bool operator== (V2<U> in) {return x==in.x && y==in.y;}
 	
 	template<typename U>
-	bool operator!= (V2<U> in) {return x!=in.x || y!=in.y;}
+	inline bool operator!= (V2<U> in) {return x!=in.x || y!=in.y;}
 	
 	template<typename U>
-	V2<T> operator+ (V2<U> in) {return V2<T>(x+in.x, y+in.y);}
+	inline V2<T> operator+ (V2<U> in) {return V2<T>(x+in.x, y+in.y);}
 	
 	template<typename U>
-	V2<T> operator- (V2<U> in) {return V2<T>(x-in.x, y-in.y);}
+	inline V2<T> operator- (V2<U> in) {return V2<T>(x-in.x, y-in.y);}
 	
 	template<typename U>
-	V2<T> operator* (U in) {return V2<T>(x*in, y*in);}
+	inline V2<T> operator* (U in) {return V2<T>(x*in, y*in);}
 	
 	template<typename U>
-	V2<T> operator* (V2<U> in) {return V2<T>(x*in.x, y*in.y);}
+	inline V2<T> operator* (V2<U> in) {return V2<T>(x*in.x, y*in.y);}
 	
 	template<typename U>
-	V2<T> operator/ (U in) {return V2<T>(x/in, y/in);}
+	inline V2<T> operator/ (U in) {return V2<T>(x/in, y/in);}
 	
 	template<typename U>
-	V2<T> operator/ (V2<U> in) {return V2<T>(x/in.x, y/in.y);}
+	inline V2<T> operator/ (V2<U> in) {return V2<T>(x/in.x, y/in.y);}
 	
 	template<typename U>
-	void operator+= (V2<U> in) {x+=in.x; y+=in.y;}
+	inline void operator+= (V2<U> in) {x+=in.x; y+=in.y;}
 	
 	template<typename U>
-	void operator-= (V2<U> in) {x-=in.x; y-=in.y;}
+	inline void operator-= (V2<U> in) {x-=in.x; y-=in.y;}
 	
 	template<typename U>
-	void operator*= (U in) {x*=in; y*=in;}
+	inline void operator*= (U in) {x*=in; y*=in;}
 	
 	template<typename U>
-	void operator*= (V2<U> in) {x*=in.x; y*=in.y;}
+	inline void operator*= (V2<U> in) {x*=in.x; y*=in.y;}
 	
 	template<typename U>
-	void operator/= (U in) {x/=in; y/=in;}
+	inline void operator/= (U in) {x/=in; y/=in;}
 	
 	template<typename U>
-	void operator/= (V2<U> in) {x/=in.x; y/=in.y;}
+	inline void operator/= (V2<U> in) {x/=in.x; y/=in.y;}
 	
 };
 typedef V2<bool> V2b;
