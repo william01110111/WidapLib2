@@ -62,6 +62,9 @@ public:
 	//set the draw color with a ClrBGR value
 	void setDrawClr(ClrBGR clrIn);
 	
+	//set the draw color with a ClrHSL value
+	void setDrawClr(ClrHSL clrIn);
+	
 	//fills the Surface with the predefined color
 	virtual void clear();
 	

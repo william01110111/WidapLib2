@@ -2,6 +2,7 @@
 #include "../../h/Math/SimpMath.h"
 #include "../../h/Graphics/TextLineFont.h"
 #include "../../h/Graphics/Image.h"
+#include "../../h/Graphics/ComplexColor.h"
 
 namespace widap
 {
@@ -349,6 +350,15 @@ void WindowSFML::setDrawClr(ClrBGR clrIn)
 	
 	drawAlpha=1;
 }
+
+//set the draw color with a ClrHSL value
+void WindowSFML::setDrawClr(ClrHSL clrIn)
+{
+	drawClr=toClr(clrIn);
+	
+	drawAlpha=1;
+}
+
 
 //fills the entire window with a single color
 

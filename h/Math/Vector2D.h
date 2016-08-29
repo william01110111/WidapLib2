@@ -228,8 +228,18 @@ inline V2<T> ceil(V2<T> a)
 inline V2d lerp(V2d in, V2d inLow, V2d inHgh, V2d outLow, V2d outHgh)
 {
 	return V2d(
-		inLow.x==inHgh.x?outHgh.x:((in.x-inLow.x)*(outLow.x-outHgh.x))/(inLow.x-inHgh.x)+outLow.x,
-		inLow.y==inHgh.y?outHgh.y:((in.y-inLow.y)*(outLow.y-outHgh.y))/(inLow.y-inHgh.y)+outLow.y);
+		inLow.x==inHgh.x?outHgh.x:((in.x-inLow.x)*(outHgh.x-outLow.x))/(inHgh.x-inLow.x)+outLow.x,
+		inLow.y==inHgh.y?outHgh.y:((in.y-inLow.y)*(outHgh.y-outLow.y))/(inHgh.y-inLow.y)+outLow.y);
+}
+
+inline V2d lerp(double in, double inLow, double inHgh, V2d outLow, V2d outHgh)
+{
+	return ((inLow==inHgh)?outHgh:((outHgh-outLow)*(in-inLow))/(inHgh-inLow)+outLow);
+}
+
+inline V2d lerp(double in, V2d outLow, V2d outHgh)
+{
+	return ((outHgh-outLow)*(in))+outLow;
 }
 
 }

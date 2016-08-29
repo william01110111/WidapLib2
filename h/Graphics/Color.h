@@ -53,6 +53,15 @@ inline ClrRGBA clr(unsigned char r, unsigned char g, unsigned char b, unsigned c
 
 struct ClrHSL
 {
+	ClrHSL() {}
+	
+	ClrHSL(int hIn, int sIn, int lIn)
+	{
+		h=hIn;
+		s=sIn;
+		l=lIn;
+	}
+	
 	int h; //hue; from 0 to 1530 (255*6); is the color part
 	int s; //saturation; from 0 to 255; the distance between the lowest and highest RGB value; how vivid the color is
 	int l; //lightness; 0 to 510; the lowest RGB value added to the highest

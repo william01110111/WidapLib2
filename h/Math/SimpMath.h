@@ -44,7 +44,7 @@ inline double lerp(double in, double inLow, double inHgh, double outLow, double 
 
 // simply clamps the output between two inputs, assumes low is less then hgh
 template <typename T>
-T clamp(T in, T low, T hgh)
+inline T clamp(T in, T low, T hgh)
 {
 	if (in>=low && in<=hgh)
 		return in;
