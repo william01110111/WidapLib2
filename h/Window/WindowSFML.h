@@ -50,6 +50,9 @@ public:
 	//sets the value of a single pixel to the predefined drawing color
 	void set(int x, int y);
 	
+	//set the draw color with an bool
+	void setDrawClr(bool clrIn);
+	
 	//set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 	void setDrawClr(int clrIn);
 	

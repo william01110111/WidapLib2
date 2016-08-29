@@ -1,5 +1,6 @@
 #include "../../h/Graphics/TextLineFont.h"
 #include "../../h/Math/SimpMath.h"
+#include "../../h/Mscl/Error.h"
 
 namespace widap
 {
@@ -1727,7 +1728,7 @@ void TextLineFont::renderGlyph(char c)
 	if (bkndAlpha>0.0)
 	{
 		bkndClr->setDrawClr(surface);
-		if (drawAlpha!=1)
+		if (bkndAlpha!=1)
 			surface->setDrawAlpha(bkndAlpha);
 		
 		surface->rect(V2d(pos.x, pos.y-cDim.y), V2d(pos.x+cDim.x, pos.y));

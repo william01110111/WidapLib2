@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Math/Vector2D.h"
+#include "Color.h"
 
 #include <string>
 using std::string;
@@ -9,6 +10,44 @@ namespace widap
 {
 
 class Surface;
+
+struct TextStyle
+{
+	TextStyle() {}
+	
+	TextStyle(double heightIn, Clr clrIn, double alphaIn=1.0)
+	{
+		height=heightIn;
+		bold=false;
+		color=clrIn;
+		alpha=alphaIn;
+		bkndAlpha=0;
+	}
+	
+	TextStyle(double heightIn, bool boldIn, Clr clrIn, double alphaIn=1.0)
+	{
+		height=heightIn;
+		bold=boldIn;
+		color=clrIn;
+		alpha=alphaIn;
+		bkndAlpha=0;
+	}
+	
+	TextStyle(double heightIn, bool boldIn, Clr clrIn, double alphaIn, Clr bkndClrIn, double bkndAlphaIn)
+	{
+		height=heightIn;
+		bold=boldIn;
+		color=clrIn;
+		alpha=alphaIn;
+		bkndColor=bkndClrIn;
+		bkndAlpha=bkndAlphaIn;
+	}
+	
+	double height;
+	bool bold;
+	Clr color, bkndColor;
+	double alpha, bkndAlpha;
+};
 
 class TextBase
 {
@@ -23,10 +62,10 @@ public:
 	TextBase(Surface * surfaceIn);
 	virtual ~TextBase();
 	
-	//void setPos(V2d posIn);
-	//void setPos(V2d posIn, Align alignIn);
+	void setPos(V2d posIn) {setPos(posIn, LEFT, TOP);}
 	void setPos(V2d posIn, AlignX alignXIn, AlignY alignYIn);
 	
+	void setPos(V2d lowIn, V2d hghIn) {setPos(lowIn, hghIn, LEFT, TOP, WRAP_CHOP);}
 	void setPos(V2d lowIn, V2d hghIn, AlignX alignInX, AlignY alignInY, Overflow overflowIn);
 	
 	void setHeight(double heightIn) {cDim=V2d(heightIn*widthRateo, heightIn);}
@@ -48,15 +87,73 @@ public:
 	
 	void draw(const string& s);
 	
-	/*template <typename T> void draw(const string& s, V2d posIn, double heightIn, T clrIn, double alphaIn=1)
+	template <typename T> void setStyle(double heightIn, T clrIn, double alphaIn=1, bool boldIn=false)
 	{
-		setPos(posIn);
-		setHeight(heightIn);
+		cDim=V2d(heightIn*widthRateo, heightIn);
+		drawBold=boldIn;
 		drawAlpha=alphaIn;
 		delete drawClr;
 		drawClr=new ClrType<T>(clrIn);
+		bkndAlpha=0;
+	}
+	
+	void setStyle(const TextStyle& style);
+	
+	template <typename T> void draw(const string& s, V2d posIn, AlignX alignXIn, AlignY alignYIn, double heightIn, T clrIn, double alphaIn=1, bool boldIn=false)
+	{
+		setStyle(heightIn, clrIn, alphaIn, boldIn);
+		setPos(posIn, alignXIn, alignYIn);
 		draw(s);
-	}*/
+	}
+	
+	template <typename T> void draw(const string& s, V2d lowIn, V2d hghIn, AlignX alignXIn, AlignY alignYIn, Overflow overflowIn, double heightIn, T clrIn, double alphaIn=1, bool boldIn=false)
+	{
+		setStyle(heightIn, clrIn, alphaIn, boldIn);
+		setPos(lowIn, hghIn, alignXIn, alignYIn, overflowIn);
+		draw(s);
+	}
+	
+	template <typename T> void draw(const string& s, V2d posIn, double heightIn, T clrIn, double alphaIn=1, bool boldIn=false)
+	{
+		setStyle(heightIn, clrIn, alphaIn, boldIn);
+		setPos(posIn, LEFT, TOP);
+		draw(s);
+	}
+	
+	template <typename T> void draw(const string& s, V2d lowIn, V2d hghIn, double heightIn, T clrIn, double alphaIn=1, bool boldIn=false)
+	{
+		setStyle(heightIn, clrIn, alphaIn, boldIn);
+		setPos(lowIn, hghIn, LEFT, TOP, WRAP_CHOP);
+		draw(s);
+	}
+	
+	void draw(const string& s, V2d posIn, AlignX alignXIn, AlignY alignYIn, const TextStyle& styleIn)
+	{
+		setStyle(styleIn);
+		setPos(posIn, alignXIn, alignYIn);
+		draw(s);
+	}
+	
+	void draw(const string& s, V2d lowIn, V2d hghIn, AlignX alignXIn, AlignY alignYIn, Overflow overflowIn, const TextStyle& styleIn)
+	{
+		setStyle(styleIn);
+		setPos(lowIn, hghIn, alignXIn, alignYIn, overflowIn);
+		draw(s);
+	}
+	
+	void draw(const string& s, V2d posIn, const TextStyle& styleIn)
+	{
+		setStyle(styleIn);
+		setPos(posIn, LEFT, TOP);
+		draw(s);
+	}
+	
+	void draw(const string& s, V2d lowIn, V2d hghIn, const TextStyle& styleIn)
+	{
+		setStyle(styleIn);
+		setPos(lowIn, hghIn, LEFT, TOP, WRAP_CHOP);
+		draw(s);
+	}
 	
 	//returns the dimensions of the rectangle the string would take up, taking into account newlines and tabs
 	V2d getBounds(const string& s, double heightIn, double maxWidth=-1);

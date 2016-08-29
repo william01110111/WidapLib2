@@ -43,6 +43,21 @@ void TextBase::setPos(V2d lowIn, V2d hghIn, AlignX alignXIn, AlignY alignYIn, Ov
 	pos=V2d(lowIn.x, hghIn.y);
 }
 
+void TextBase::setStyle(const TextStyle& style)
+{
+	cDim=V2d(style.height*widthRateo, style.height);
+	drawBold=style.bold;
+	drawAlpha=style.alpha;
+	delete drawClr;
+	drawClr=new ClrType<Clr>(style.color);
+	if (style.bkndAlpha>0)
+	{
+		delete bkndClr;
+		bkndAlpha=style.bkndAlpha;
+		bkndClr=new ClrType<Clr>(style.bkndColor);
+	}
+}
+
 V2d TextBase::getBounds(const string& s, double heightIn, double maxWidth)
 {
 	V2d out;
@@ -93,7 +108,7 @@ double TextBase::getLineWidth(const string& s, int * i, double heightIn, double 
 }
 
 void TextBase::draw(const string& s)
-{	
+{
 	double wrapWidth=((overflow==WRAP_ALLOW || overflow==WRAP_CHOP)?hghBound.x-lowBound.x:-1);
 	
 	bool wrap=(overflow==WRAP_ALLOW || overflow==WRAP_CHOP);
@@ -200,11 +215,12 @@ void TextBase::draw(const string& s)
 				{
 					pos.y-=cDim.y;
 					pos.x=lowBound.x;
-					renderGlyph(s[i]);
-					pos.x+=cDim.x;
 					
 					if (chopY && pos.y-cDim.y<lowBound.y)
 						return;
+					
+					renderGlyph(s[i]);
+					pos.x+=cDim.x;
 				}
 				else if (chopX)
 				{

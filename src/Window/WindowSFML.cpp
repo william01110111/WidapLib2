@@ -293,6 +293,17 @@ void WindowSFML::set(int x, int y)
 	}*/
 }
 
+//set the draw color with an bool
+void WindowSFML::setDrawClr(bool clrIn)
+{
+	if (clrIn)
+		drawClr=clr(255, 255, 255);
+	else
+		drawClr=clr(0, 0, 0);
+	
+	drawAlpha=1;
+}
+
 //set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 void WindowSFML::setDrawClr(int clrIn)
 {
@@ -335,6 +346,8 @@ void WindowSFML::setDrawClr(ClrRGBA clrIn)
 void WindowSFML::setDrawClr(ClrBGR clrIn)
 {
 	drawClr=clrIn;
+	
+	drawAlpha=1;
 }
 
 //fills the entire window with a single color
