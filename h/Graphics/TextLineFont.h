@@ -17,7 +17,7 @@ public:
 	/// If you get an error here, it probably means your not using C++ 11, which you should be
 	
 protected:
-	Surface * surface; // the surface that the text will be drawn to
+	
 	void renderGlyph(char c);
 	
 private:
@@ -36,10 +36,10 @@ private:
 	// where the data is stored
 	static Glyph fontData[256];
 	
-	static constexpr double GLYPH_DIM_RATIO_X=0.5;
-	static constexpr double GLYPH_DIM_RATIO_Y=0.5;
-	static constexpr double GLYPH_OFFSET_X=0.25;
-	static constexpr double GLYPH_OFFSET_Y=0.25;
+	static constexpr double GLYPH_DIM_RATIO_X=0.6;
+	static constexpr double GLYPH_DIM_RATIO_Y=0.6;
+	static constexpr double GLYPH_OFFSET_X=0.2;
+	static constexpr double GLYPH_OFFSET_Y=0.2;
 	
 	static bool hasInited;
 	

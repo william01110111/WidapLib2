@@ -15,7 +15,7 @@ void ButtonViewUI::draw()
 	V2d low=getLow(), hgh=getHgh();
 	
 	surface->rect(low, hgh, clicked?themeUI.buttonBkndSelect:themeUI.buttonBkndUnselect);
-	surface->text()->draw(text, V2d(low.x, hgh.y), hgh.y-low.y, themeUI.buttonText);
+	//surface->text()->draw(text, V2d(low.x, hgh.y), hgh.y-low.y, themeUI.buttonText);
 }
 
 void ButtonViewUI::update()

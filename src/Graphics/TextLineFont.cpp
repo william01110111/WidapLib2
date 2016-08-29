@@ -1711,7 +1711,7 @@ void TextLineFont::init()
 	
 }
 
-TextLineFont::TextLineFont(Surface * surfaceIn)
+TextLineFont::TextLineFont(Surface * surfaceIn): TextBase(surfaceIn)
 {
 	if (!hasInited)
 	{
@@ -1719,7 +1719,6 @@ TextLineFont::TextLineFont(Surface * surfaceIn)
 		hasInited=1;
 	}
 	
-	surface=surfaceIn;
 	widthRateo=0.5;
 }
 
@@ -1731,22 +1730,22 @@ void TextLineFont::renderGlyph(char c)
 		if (drawAlpha!=1)
 			surface->setDrawAlpha(bkndAlpha);
 		
-		surface->rect(V2d(pos.x+offset, pos.y-dim.y), V2d(pos.x+offset+dim.x, pos.y));
+		surface->rect(V2d(pos.x, pos.y-cDim.y), V2d(pos.x+cDim.x, pos.y));
 	}
 	
 	double lineThick;
 	V2d loc, glyphDim;
 	
-	glyphDim.x=dim.x*GLYPH_DIM_RATIO_X;
-	glyphDim.y=dim.y*GLYPH_DIM_RATIO_Y;
+	glyphDim.x=cDim.x*GLYPH_DIM_RATIO_X;
+	glyphDim.y=cDim.y*GLYPH_DIM_RATIO_Y;
 	
-	loc.x=pos.x+offset+GLYPH_OFFSET_X*dim.x;
-	loc.y=pos.y-dim.y+GLYPH_OFFSET_Y*dim.y;
+	loc.x=pos.x+GLYPH_OFFSET_X*cDim.x;
+	loc.y=pos.y-cDim.y+GLYPH_OFFSET_Y*cDim.y;
 	
 	if (drawBold)
-		lineThick=max(dim.y*BOLD_THICKNESS_RATEO, 1.0);
+		lineThick=max(cDim.y*BOLD_THICKNESS_RATEO, 1.0);
 	else
-		lineThick=max(dim.y*LINE_THICKNESS_RATEO, 1.0);
+		lineThick=max(cDim.y*LINE_THICKNESS_RATEO, 1.0);
 	
 	drawClr->setDrawClr(surface);
 	if (drawAlpha!=1)
