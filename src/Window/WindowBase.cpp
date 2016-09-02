@@ -17,12 +17,15 @@ void WindowBase::resetVars()
 	frameTime=1.0/60.0;
 	windowHasFocus=0;
 	windowIsOpen=0;
+	dltaTime=frameTime;
+	timer.reset();
+	dltaTimer.reset();
 }
 
 bool WindowBase::nextFrame()
 {
 	refreshDisplay();
-	timer.waitUntil(frameTime);
+	timer.waitUntil(frameTime, true);
 	updateInput();
 	return windowIsOpen;
 }

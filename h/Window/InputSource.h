@@ -49,6 +49,8 @@ public:
 	
 	virtual V2u getDim()=0;
 	
+	virtual double getDltaTime()=0;
+	
 protected:
 	
 	//zeros out vars

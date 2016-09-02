@@ -16,8 +16,10 @@ public:
 	void draw();
 	void update();
 	
-	void setText(string textIn) {text=textIn;}
+	void setText(string textIn);
 	string getText() {return text;}
+	
+	V2d calcDim();
 	
 	bool isClicked() {return clicked;}
 	

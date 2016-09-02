@@ -58,7 +58,7 @@ void TextBase::setStyle(const TextStyle& style)
 	}
 }
 
-V2d TextBase::getBounds(const string& s, double heightIn, double maxWidth)
+V2d TextBase::getBounds(const string& s, const V2d& cDimIn, double maxWidth)
 {
 	V2d out;
 	double w=0;
@@ -66,21 +66,21 @@ V2d TextBase::getBounds(const string& s, double heightIn, double maxWidth)
 	
 	do
 	{
-		w=getLineWidth(s, &i, heightIn, maxWidth);
+		w=getLineWidth(s, &i, cDimIn, maxWidth);
 		
 		if (fabs(w)>fabs(out.x))
 			out.x=w;
 		
-		out.y+=heightIn;
+		out.y+=cDimIn.y;
 	}
 	while (i<(int)s.length());
 	
 	return out;
 }
 
-double TextBase::getLineWidth(const string& s, int * i, double heightIn, double maxWidth)
+double TextBase::getLineWidth(const string& s, int * i, const V2d& cDimIn, double maxWidth)
 {
-	double cw=heightIn*widthRateo, w=0;
+	double cw=cDimIn.x, w=0;
 	
 	while (true)
 	{
@@ -117,7 +117,7 @@ void TextBase::draw(const string& s)
 	
 	if (alignY!=TOP || overflow==SHRINK_TO_BOUNDS)
 	{
-		V2d dim=getBounds(s, cDim.y, wrapWidth);
+		V2d dim=getBounds(s, cDim, wrapWidth);
 		
 		if (overflow==SHRINK_TO_BOUNDS)
 		{
@@ -163,7 +163,7 @@ void TextBase::draw(const string& s)
 		
 		do
 		{
-			w=getLineWidth(s, &i, cDim.y, wrapWidth);
+			w=getLineWidth(s, &i, cDim, wrapWidth);
 			
 			if (chopX && w>hghBound.x-lowBound.x)
 				w=floor((hghBound.x-lowBound.x)/cDim.x)*cDim.x;

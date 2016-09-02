@@ -27,14 +27,15 @@ void ContainerViewUI::update()
 void ContainerViewUI::addChild(ViewUI * childIn)
 {
 	children.push_back(childIn);
-	childIn->setInput(input);
-	childIn->setSurface(surface);
+	childIn->setIO(surface, input);
 	
 	((ContainerViewUI *)childIn)->parent=this;
 	//thats right, I cast childIn to a type its not so I can get at a protected member of the base class
 	//You think thats one of the worst C++ hacks you've ever seen? Well, fuck you!
 	
-	calcDim();
+	childIn->calcAndSetDim();
+	
+	childChanged();
 }
 
 void ContainerViewUI::removeChild(ViewUI * childIn)
@@ -54,7 +55,17 @@ void ContainerViewUI::removeChild(ViewUI * childIn)
 	
 	children.erase(i);
 	
-	calcDim();
+	childIn->calcAndSetDim();
+	
+	childChanged();
+}
+
+void ContainerViewUI::ioChanged()
+{
+	for (unsigned i=0; i<children.size(); ++i)
+	{
+		children[i]->setIO(surface, input);
+	}
 }
 
 }

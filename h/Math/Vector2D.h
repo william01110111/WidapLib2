@@ -134,6 +134,7 @@ public:
 	
 	template<typename U>
 	inline V2<T> operator- (V2<U> in) {return V2<T>(x-in.x, y-in.y);}
+	inline V2<T> operator- () {return V2<T>(-x, -y);}
 	
 	template<typename U>
 	inline V2<T> operator* (U in) {return V2<T>(x*in, y*in);}

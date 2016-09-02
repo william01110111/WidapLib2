@@ -9,16 +9,23 @@ void ViewUI::setRect(const V2d& lowIn, const V2d& hghIn)
 {
 	low=lowIn;
 	hgh=hghIn;
+	rectChanged();
 }
 
-void ViewUI::setDim(const V2d& in)
-{
-	//if (dim!=in)
+bool ViewUI::setDim(const V2d& in)
+{	
+	if (dim==in)
+	{
+		return false;
+	}
+	else
 	{
 		dim=in;
 		
 		if (parent)
-			parent->calcDim();
+		{
+			parent->childChanged();
+		}
 		else
 		{
 			if (surface)
@@ -30,12 +37,14 @@ void ViewUI::setDim(const V2d& in)
 				setRect(V2d(), V2d());
 			}
 		}
+		
+		return true;
 	}
 }
 
-void ViewUI::calcDim()
+V2d ViewUI::calcDim()
 {
-	setDim(V2d(500, 700));
+	return V2d(500, 700);
 }
 
 }

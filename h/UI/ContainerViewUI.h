@@ -9,23 +9,52 @@ namespace widap
 
 class ContainerViewUI: public ViewUI
 {
+
+///for clients to use
+
+public:
+	
+	void addChild(ViewUI * childIn);
+	void removeChild(ViewUI * childIn);
+
+///for subclasses to override
+
+protected:
+	
+	//sets the rects of all the children
+	virtual void setChildRects()=0;
+	
+	virtual void drawFrame() {}
+	virtual void updateFrame() {}
+	
+
+///for subclasses to use
+
+protected:
+	
+	std::vector<ViewUI *> children;
+	
+
+///internal
+
 public:
 	
 	void draw();
 	void update();
 	
-	void addChild(ViewUI * childIn);
-	void removeChild(ViewUI * childIn);
+	void childChanged()
+	{
+		if (!calcAndSetDim())
+			setChildRects();
+	}
 	
 protected:
 	
-	//sets the rect the view will be drawn in, also, needs to set the rect on any subviews
-	virtual void setRect(const V2d& lowIn, const V2d& hghIn)=0;
+	void rectChanged() {setChildRects();};
 	
-	virtual void drawFrame() {}
-	virtual void updateFrame() {}
+private:
 	
-	std::vector<ViewUI *> children;
+	void ioChanged();
 };
 
 }

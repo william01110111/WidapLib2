@@ -5,10 +5,11 @@
 namespace widap
 {
 
-void ScatterViewUI::setRect(const V2d& lowIn, const V2d& hghIn)
+void ScatterViewUI::setChildRects()
 {
-	ViewUI::setRect(lowIn, hghIn);
-	const V2d& low=lowIn, hgh=hghIn;
+	V2d buffer(12, 12);
+	
+	V2d low=buffer+getLow(), hgh=-buffer+getHgh();
 	
 	double x=low.x, yTop=low.y, yBtm=low.y;
 	
@@ -20,7 +21,7 @@ void ScatterViewUI::setRect(const V2d& lowIn, const V2d& hghIn)
 		if (x+dim.x>hgh.x && x>low.x)
 		{
 			x=low.x;
-			yBtm=yTop;
+			yBtm=yTop+buffer.y;
 		}
 		
 		V2d lowOut(x, yBtm), hghOut;
@@ -34,7 +35,7 @@ void ScatterViewUI::setRect(const V2d& lowIn, const V2d& hghIn)
 			hghOut.x=x+dim.x;
 		}
 		
-		x=hghOut.x;
+		x=hghOut.x+buffer.x;
 		
 		if (!stretch.y || dim.y+yBtm>hghOut.y)
 		{

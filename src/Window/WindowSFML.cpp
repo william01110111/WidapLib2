@@ -105,7 +105,7 @@ void WindowSFML::open(V2u dimIn, string nameIn)
 			windowObj.create(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen);
 		else if (dimIn.y==1)
 		{
-			err << "requested maximized window, but SFML doesn't support that so making it a bit smaller then the screen" << err;
+			err << "warning: requested maximized window, but SFML doesn't support that so making window a bit smaller then the screen" << err;
 			sf::VideoMode mode=sf::VideoMode::getDesktopMode();
 			double wo=0.02, ho=0.12;
 			windowObj.create(sf::VideoMode(mode.width*(1-wo), mode.height*(1-ho)), name);
@@ -260,6 +260,9 @@ void WindowSFML::updateInput()
 	
 	mouseLocation.x=mouseVctr.x;
 	mouseLocation.y=dim.y-mouseVctr.y;
+	
+	dltaTime=dltaTimer.get();
+	dltaTimer.reset();
 }
 
 void WindowSFML::hasBeenResized()

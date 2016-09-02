@@ -11,7 +11,7 @@ public:
 	
 protected:
 	
-	void setRect(const V2d& lowIn, const V2d& hghIn);
+	void setChildRects();
 	
 };
 

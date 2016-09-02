@@ -156,13 +156,15 @@ public:
 	}
 	
 	//returns the dimensions of the rectangle the string would take up, taking into account newlines and tabs
-	V2d getBounds(const string& s, double heightIn, double maxWidth=-1);
-	V2d getBounds(const string& s) {return getBounds(s, cDim.y);}
+	static V2d getBounds(const string& s, const V2d& cDimIn, double maxWidth=-1);
+	V2d getBounds(const string& s) {return getBounds(s, cDim);}
+	V2d getBounds(const string& s, double heightIn) {return getBounds(s, V2d(heightIn*widthRateo, heightIn));}
 	
 	//get the width of the line starting at the i location in the string
 	//when function returns, i will be the first char after \n or one greater then the size of the string
-	double getLineWidth(const string& s, int * i, double heightIn, double maxWidth=-1);
-	double getLineWidth(const string& s, int * i) {return getLineWidth(s, i, cDim.y);}
+	static double getLineWidth(const string& s, int * i, const V2d& cDimIn, double maxWidth=-1);
+	double getLineWidth(const string& s, int * i) {return getLineWidth(s, i, cDim);}
+	double getLineWidth(const string& s, int * i, double heightIn) {return getLineWidth(s, i, V2d(heightIn*widthRateo, heightIn));}
 	
 protected:
 	static const int TAB_CHARS=4; //max characters in a tab, min is 1

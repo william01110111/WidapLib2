@@ -9,7 +9,7 @@ Timer::Timer()
 	reset();
 }
 
-double Timer::check()
+double Timer::get()
 {
 	return (std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now()-baseTime)).count();
 }

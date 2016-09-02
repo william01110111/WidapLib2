@@ -134,6 +134,15 @@ inline ClrBGR lerp(double in, double inLow, double inHgh, ClrBGR outLow, ClrBGR 
 	}
 }
 
+inline ClrBGR lerp(double in, ClrBGR outLow, ClrBGR outHgh)
+{
+	outLow.r+=(outLow.r-outHgh.r)*in;
+	outLow.g+=(outLow.g-outHgh.g)*in;
+	outLow.b+=(outLow.b-outHgh.b)*in;
+	
+	return outLow;
+}
+
 }
 
 

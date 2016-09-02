@@ -12,7 +12,7 @@ public:
 	Timer();
 	
 	//get the current time
-	double check();
+	double get();
 	
 	//wait until the given time after the last time the clock was reset
 	//(or when the object was created if it has never been reset)

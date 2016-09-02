@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Graphics/Color.h"
+#include "../Graphics/TextBase.h"
 
 namespace widap
 {
@@ -12,7 +13,8 @@ public:
 	
 	void theme0();
 	
-	ClrRGBA buttonBkndUnselect, buttonBkndSelect, buttonText;
+	ClrRGBA buttonBkndUnselect, buttonBkndSelect;
+	TextStyle buttonTextUnselect, buttonTextSelect;
 };
 
 extern ThemeUI themeUI;

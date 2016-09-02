@@ -47,6 +47,9 @@ public:
 	//close the window
 	virtual void close()=0;
 	
+	//returns how much time (in seconds) the last frame took
+	double getDltaTime() {return dltaTime;}
+	
 protected:
 	
 	//zeros out vars
@@ -58,7 +61,9 @@ protected:
 	bool windowHasFocus;
 	bool windowIsOpen;
 	
-	double frameTime;
+	double frameTime; //how much time a frame should take
+	double dltaTime; //how much time the last frame did take
+	Timer dltaTimer;
 	Timer timer;
 	
 	V2u dim;
