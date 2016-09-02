@@ -42,7 +42,46 @@ inline ClrBGR toBGR(ClrHSL hsl)
 
 inline ClrBGR toBGR(const ClrRGBA& rgba)
 {
-	return ClrBGR(rgba.r, rgba.g, rgba.b);
+	return Clr(rgba.r, rgba.g, rgba.b);
+}
+
+inline ClrBGR toBGR(int clrIn)
+{
+	switch (clrIn)
+	{
+	case 1:
+		return Clr(255, 255, 255);
+		break;
+		
+	case 2:
+		return Clr(0, 16, 32);
+		break;
+		
+	case 3:
+		return Clr(192, 255, 0);
+		break;
+		
+	case 4:
+		return Clr(255, 0, 128);
+		break;
+		
+	default:
+		return Clr(0, 0, 0);
+		break;
+	}
+}
+
+inline ClrBGR toBGR(unsigned char clrIn)
+{
+	return Clr(clrIn, clrIn, clrIn);
+}
+
+inline ClrBGR toBGR(bool clrIn)
+{
+	if (clrIn)
+		return Clr(255, 255, 255);
+	else
+		return Clr(0, 0, 0);
 }
 
 #define toClr toBGR

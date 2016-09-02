@@ -20,7 +20,7 @@ WindowSFML::WindowSFML()
 	
 	err.setPrefix("widap::WindowSFML: ");
 	
-	drawClr=clr(0, 0, 0);
+	drawClr=Clr(0, 0, 0);
 	drawAlpha=1;
 	data=0;
 	
@@ -300,49 +300,28 @@ void WindowSFML::set(int x, int y)
 //set the draw color with an bool
 void WindowSFML::setDrawClr(bool clrIn)
 {
-	if (clrIn)
-		drawClr=clr(255, 255, 255);
-	else
-		drawClr=clr(0, 0, 0);
-	
+	drawClr=toBGR(clrIn);
+	drawAlpha=1;
+}
+
+//set the draw color with an unsigned char
+void WindowSFML::setDrawClr(unsigned char clrIn)
+{
+	drawClr=toBGR(clrIn);
 	drawAlpha=1;
 }
 
 //set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 void WindowSFML::setDrawClr(int clrIn)
 {
-	switch (clrIn)
-	{
-	case 1:
-		drawClr=clr(255, 255, 255);
-		break;
-		
-	case 2:
-		drawClr=clr(0, 16, 32);
-		break;
-		
-	case 3:
-		drawClr=clr(192, 255, 0);
-		break;
-		
-	case 4:
-		drawClr=clr(255, 0, 128);
-		break;
-		
-	default:
-		drawClr=clr(0, 0, 0);
-		break;
-	}
-	
+	drawClr=toBGR(clrIn);
 	drawAlpha=1;
 }
 
 //set the draw color with a ClrRGBA value
 void WindowSFML::setDrawClr(ClrRGBA clrIn)
 {
-	drawClr.r=clrIn.r;
-	drawClr.g=clrIn.g;
-	drawClr.b=clrIn.b;
+	drawClr=toBGR(clrIn);
 	drawAlpha=clrIn.a/255.0;
 }
 
@@ -350,7 +329,6 @@ void WindowSFML::setDrawClr(ClrRGBA clrIn)
 void WindowSFML::setDrawClr(ClrBGR clrIn)
 {
 	drawClr=clrIn;
-	
 	drawAlpha=1;
 }
 
@@ -358,7 +336,6 @@ void WindowSFML::setDrawClr(ClrBGR clrIn)
 void WindowSFML::setDrawClr(ClrHSL clrIn)
 {
 	drawClr=toClr(clrIn);
-	
 	drawAlpha=1;
 }
 

@@ -62,16 +62,22 @@ public:
 	void set(int x, int y);
 	
 	//set the draw color with an bool
-	void setDrawClr(bool clrIn) {setDrawClr((int)clrIn);}
+	void setDrawClr(bool clrIn);
+	
+	//set the draw color with an unsigned char
+	void setDrawClr(unsigned char clrIn);
 	
 	//set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 	void setDrawClr(int clrIn);
-
+	
 	//set the draw color with a ClrRGBA value
 	void setDrawClr(ClrRGBA clrIn);
 	
 	//set the draw color with a ClrBGR value
 	void setDrawClr(ClrBGR clrIn);
+	
+	//set the draw color with a ClrHSL value
+	void setDrawClr(ClrHSL clrIn);
 	
 	//draw a rectangle with the preset draw color
 	//void rect(V2d low, V2d hgh);

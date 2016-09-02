@@ -2,6 +2,7 @@
 #include "../../h/UI/ButtonViewUI.h"
 #include "../../h/UI/ThemeUI.h"
 #include "../../h/Mscl/Error.h"
+#include "../../h/Mscl/Action.h"
 
 namespace widap
 {
@@ -44,6 +45,8 @@ void ButtonViewUI::update()
 	if (input->mouseLoc().isInRect(low, hgh) && input->lClick())
 	{
 		clicked=true;
+		if (clickAction)
+			clickAction->execute();
 	}
 	else
 	{

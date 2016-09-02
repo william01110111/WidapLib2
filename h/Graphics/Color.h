@@ -9,31 +9,31 @@ struct ClrRGBA;
 //the standard color struct, in the original Widap library the exact same struct was called RGBpix because thats not confusing at all
 struct ClrBGR
 {
-	ClrBGR() {}
+public:
 	
-	ClrBGR(unsigned char rIn, unsigned char gIn, unsigned char bIn)
+	inline ClrBGR() {}
+	
+	inline ClrBGR(unsigned char rIn, unsigned char gIn, unsigned char bIn)
 	{
-		r=rIn;
-		g=gIn;
 		b=bIn;
+		g=gIn;
+		r=rIn;
 	}
 	
 	unsigned char b;
 	unsigned char g;
 	unsigned char r;
-	
-	//operator ClrRGBA();
 };
 
 typedef ClrBGR Clr; //make it a bit easier to type
 
-inline ClrBGR clr(unsigned char r, unsigned char g, unsigned char b) {return {b, g, r};}
+//inline ClrBGR clr(unsigned char r, unsigned char g, unsigned char b) {return Clr(r, g, b);}
 
 struct ClrRGBA
 {
-	ClrRGBA() {}
+	inline ClrRGBA() {}
 	
-	ClrRGBA(unsigned char rIn, unsigned char gIn, unsigned char bIn, unsigned char aIn)
+	inline ClrRGBA(unsigned char rIn, unsigned char gIn, unsigned char bIn, unsigned char aIn)
 	{
 		r=rIn;
 		g=gIn;
@@ -47,7 +47,7 @@ struct ClrRGBA
 	unsigned char a;
 };
 
-inline ClrRGBA clr(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {return {r, g, b, a};}
+//inline ClrRGBA clr(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {return ClrRGBA(r, g, b, a);}
 
 //ClrBGR::operator ClrRGBA() {return {r, g, b, 255};}
 

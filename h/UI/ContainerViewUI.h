@@ -2,7 +2,7 @@
 #pragma once
 
 #include "ViewUI.h"
-#include <vector>
+#include <list>
 
 namespace widap
 {
@@ -32,7 +32,7 @@ protected:
 
 protected:
 	
-	std::vector<ViewUI *> children;
+	std::list<ViewUI*> children;
 	
 
 ///internal

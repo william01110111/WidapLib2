@@ -6,9 +6,10 @@ namespace widap
 
 void ContainerViewUI::draw()
 {
-	for (unsigned i=0; i<children.size(); ++i)
+	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
-		children[i]->draw();
+		if ((*i)->getIfActive())
+			(*i)->draw();
 	}
 	
 	drawFrame();
@@ -16,9 +17,10 @@ void ContainerViewUI::draw()
 
 void ContainerViewUI::update()
 {
-	for (unsigned i=0; i<children.size(); ++i)
+	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
-		children[i]->update();
+		if ((*i)->getIfActive())
+			(*i)->update();
 	}
 	
 	updateFrame();
@@ -28,6 +30,7 @@ void ContainerViewUI::addChild(ViewUI * childIn)
 {
 	children.push_back(childIn);
 	childIn->setIO(surface, input);
+	childIn->setActive(true);
 	
 	((ContainerViewUI *)childIn)->parent=this;
 	//thats right, I cast childIn to a type its not so I can get at a protected member of the base class
@@ -40,7 +43,7 @@ void ContainerViewUI::addChild(ViewUI * childIn)
 
 void ContainerViewUI::removeChild(ViewUI * childIn)
 {
-	std::vector<ViewUI *>::const_iterator i=children.begin();
+	std::list<ViewUI*>::const_iterator i=children.begin();
 	
 	while ((*i)!=childIn)
 	{
@@ -53,18 +56,21 @@ void ContainerViewUI::removeChild(ViewUI * childIn)
 		++i;
 	}
 	
-	children.erase(i);
-	
+	childIn->setActive(false);
+	((ContainerViewUI *)childIn)->parent=nullptr;
+	childIn->setIO(nullptr, nullptr);
 	childIn->calcAndSetDim();
+	
+	children.erase(i);
 	
 	childChanged();
 }
 
 void ContainerViewUI::ioChanged()
 {
-	for (unsigned i=0; i<children.size(); ++i)
+	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
-		children[i]->setIO(surface, input);
+		(*i)->setIO(surface, input);
 	}
 }
 

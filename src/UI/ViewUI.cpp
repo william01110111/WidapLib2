@@ -42,9 +42,20 @@ bool ViewUI::setDim(const V2d& in)
 	}
 }
 
+void ViewUI::setActive(bool in)
+{
+	if (active!=in)
+	{
+		active=in;
+		
+		if (parent)
+			parent->childChanged();
+	}
+}
+
 V2d ViewUI::calcDim()
 {
-	return V2d(500, 700);
+	return V2d(-100, -100);
 }
 
 }

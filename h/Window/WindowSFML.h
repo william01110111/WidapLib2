@@ -53,6 +53,9 @@ public:
 	//set the draw color with an bool
 	void setDrawClr(bool clrIn);
 	
+	//set the draw color with an unsigned char
+	void setDrawClr(unsigned char clrIn);
+	
 	//set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 	void setDrawClr(int clrIn);
 	

@@ -13,10 +13,10 @@ void ScatterViewUI::setChildRects()
 	
 	double x=low.x, yTop=low.y, yBtm=low.y;
 	
-	for (unsigned i=0; i<children.size(); ++i)
+	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
-		V2d dim=children[i]->getDim();
-		V2d stretch=children[i]->getStretch();
+		V2d dim=(*i)->getDim();
+		V2d stretch=(*i)->getStretch();
 		
 		if (x+dim.x>hgh.x && x>low.x)
 		{
@@ -51,7 +51,7 @@ void ScatterViewUI::setChildRects()
 			hghOut.y=yTop;
 		}
 		
-		children[i]->setRect(lowOut, hghOut);
+		(*i)->setRect(lowOut, hghOut);
 	}
 }
 

@@ -21,6 +21,9 @@ public:
 	void setIO(Surface * surfaceIn, InputSource * inputIn) {surface=surfaceIn; input=inputIn; ioChanged();}
 	void setWindow(WindowBase * windowIn) {setIO(windowIn, windowIn);}
 	
+	bool getIfActive() {return active;}
+	void setActive(bool in);
+	
 	//get the rect that this view is in
 	const V2d& getLow() {return low;}
 	const V2d& getHgh() {return hgh;}
@@ -76,6 +79,9 @@ protected:
 	ContainerViewUI * parent=nullptr;
 	
 private:
+	
+	//if this view will get input and be drawn
+	bool active=false;
 	
 	//the rectangle where it will be drawn and get input, set by the parent, which is influenced by the constraints
 	V2d low, hgh;

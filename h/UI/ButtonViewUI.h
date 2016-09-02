@@ -6,6 +6,8 @@
 namespace widap
 {
 
+class Action;
+
 class ButtonViewUI: public ViewUI
 {
 public:
@@ -19,6 +21,8 @@ public:
 	void setText(string textIn);
 	string getText() {return text;}
 	
+	void setClickAction(Action * in) {clickAction=in;}
+	
 	V2d calcDim();
 	
 	bool isClicked() {return clicked;}
@@ -26,6 +30,8 @@ public:
 private:
 	string text;
 	bool clicked;
+	
+	Action * clickAction=nullptr;
 };
 
 }
