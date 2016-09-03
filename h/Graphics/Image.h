@@ -88,7 +88,7 @@ public:
 	Type getType() {return IMAGE_BGR;}
 	
 	//draw a surface
-	void surfaceWithAlphaSet(Surface * other, V2d pos, double alphaIn);
+	virtual void surfaceWithAlphaSet(Surface * other, V2d pos);
 	
 	//draw an image onto the window (is used by surface(), so that works just as well)
 	//pointer type must be to an image

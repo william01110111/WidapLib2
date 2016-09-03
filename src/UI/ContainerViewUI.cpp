@@ -11,8 +11,6 @@ void ContainerViewUI::draw()
 		if ((*i)->getIfActive())
 			(*i)->draw();
 	}
-	
-	drawFrame();
 }
 
 void ContainerViewUI::update()
@@ -22,17 +20,15 @@ void ContainerViewUI::update()
 		if ((*i)->getIfActive())
 			(*i)->update();
 	}
-	
-	updateFrame();
 }
 
-void ContainerViewUI::addChild(ViewUI * childIn)
+void ContainerViewUI::addChildToList(ViewUI * childIn)
 {
 	children.push_back(childIn);
 	childIn->setIO(surface, input);
 	childIn->setActive(true);
 	
-	((ContainerViewUI *)childIn)->parent=this;
+	((ContainerViewUI*)childIn)->parent=this;
 	//thats right, I cast childIn to a type its not so I can get at a protected member of the base class
 	//You think thats one of the worst C++ hacks you've ever seen? Well, fuck you!
 	
@@ -41,29 +37,41 @@ void ContainerViewUI::addChild(ViewUI * childIn)
 	childChanged();
 }
 
-void ContainerViewUI::removeChild(ViewUI * childIn)
+void ContainerViewUI::removeChildFromList(const std::list<ViewUI*>::const_iterator& i)
 {
-	std::list<ViewUI*>::const_iterator i=children.begin();
+	(*i)->setActive(false);
+	((ContainerViewUI*)(*i))->parent=nullptr;
+	(*i)->setIO(nullptr, nullptr);
+	(*i)->calcAndSetDim();
+	
+	children.erase(i);
+	
+	childChanged();
+}
+
+void ContainerViewUI::removeChildFromList(ViewUI * childIn)
+{
+	if (children.size()<1)
+	{
+		err << "children list is empty when attempt was made to remove child" << err;
+		return;
+	}
+	
+	std::list<ViewUI*>::const_iterator i=children.end();
+	--i;
 	
 	while ((*i)!=childIn)
 	{
-		if (i==children.end())
+		if (i==children.begin())
 		{
 			err << "attempted to remove child frim ViewUI, but couldn't find it" << err;
 			return;
 		}
 		
-		++i;
+		--i;
 	}
 	
-	childIn->setActive(false);
-	((ContainerViewUI *)childIn)->parent=nullptr;
-	childIn->setIO(nullptr, nullptr);
-	childIn->calcAndSetDim();
-	
-	children.erase(i);
-	
-	childChanged();
+	removeChildFromList(i);
 }
 
 void ContainerViewUI::ioChanged()

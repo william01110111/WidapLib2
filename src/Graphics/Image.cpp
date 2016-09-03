@@ -257,12 +257,12 @@ void Image::setDrawClr(ClrHSL clrIn)
 
 
 //draw a surface
-void Image::surfaceWithAlphaSet(Surface * other, V2d pos, double alphaIn)
+void Image::surfaceWithAlphaSet(Surface * other, V2d pos)
 {
 	switch (other->getType())
 	{
 	case IMAGE_BGR:
-		image((Image *)other, pos, alphaIn);
+		image((Image *)other, pos, drawAlpha);
 		break;
 		
 	default:
