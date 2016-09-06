@@ -17,7 +17,7 @@ public:
 	Image() {init();}
 	Image(V2u dimIn) {init(); create(dimIn);}
 	Image(std::string filename) {init(); load(filename);}
-	~Image();
+	virtual ~Image();
 	
 	
 	///getters and setters

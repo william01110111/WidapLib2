@@ -50,6 +50,8 @@ void ViewUI::setActive(bool in)
 		
 		if (parent)
 			parent->childChanged();
+		
+		activeChanged();
 	}
 }
 

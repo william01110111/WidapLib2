@@ -34,7 +34,7 @@ private:
 	int quality=50;
 	static const int colorComponents=3;
 	V2i dim;
-	long unsigned int jpegSize=0; //not sure what this is
+	long unsigned int dataSize=0; //not sure what this is
 	void * compressor; //this should be of type tjhandle, which is just a typedef of void pointer
 	void * decompressor;
 	

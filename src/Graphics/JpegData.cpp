@@ -38,20 +38,20 @@ void JpegData::fromImage(Image * img)
 	
 	dim=img->getDim();
 	
-	tjCompress2(compressor, (unsigned char *)img->getData(), dim.x, 0, dim.y, TJPF_BGR, &data, &jpegSize, TJSAMP_444, quality, TJFLAG_BOTTOMUP);
+	tjCompress2(compressor, (unsigned char *)img->getData(), dim.x, 0, dim.y, TJPF_BGR, &data, &dataSize, TJSAMP_444, quality, TJFLAG_BOTTOMUP);
 	
-	err << "compressed jpeg to " << 100.0*jpegSize/(img->getDim().area()*sizeof(ClrBGR)) << "% the original size" << err;
+	err << "compressed jpeg to " << 100.0*dataSize/(img->getDim().area()*sizeof(ClrBGR)) << "% the original size" << err;
 }
 
 void JpegData::toImage(Image * img, bool makeEmptyAfter)
 {
 	int subsamp;
 	
-	tjDecompressHeader2(decompressor, data, jpegSize, &dim.x, &dim.y, &subsamp);
+	tjDecompressHeader2(decompressor, data, dataSize, &dim.x, &dim.y, &subsamp);
 	
 	img->create(dim);
 	
-	tjDecompress2(decompressor, data, jpegSize, (unsigned char *)img->getData(), dim.x, 0, dim.y, TJPF_BGR, TJFLAG_BOTTOMUP);
+	tjDecompress2(decompressor, data, dataSize, (unsigned char *)img->getData(), dim.x, 0, dim.y, TJPF_BGR, TJFLAG_BOTTOMUP);
 	
 	if (makeEmptyAfter)
 		makeEmpty();

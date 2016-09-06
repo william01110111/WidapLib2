@@ -13,6 +13,8 @@ public:
 	
 	void theme0();
 	
+	ClrRGBA containerViewBknd;
+	
 	ClrRGBA buttonBkndUnselect, buttonBkndSelect;
 	TextStyle buttonTextUnselect, buttonTextSelect;
 };

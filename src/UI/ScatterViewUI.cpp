@@ -13,7 +13,7 @@ void ScatterViewUI::setChildRects()
 	
 	double x=low.x, yTop=low.y, yBtm=low.y;
 	
-	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
+	for (auto i=children.begin(); i!=children.end(); i++)
 	{
 		V2d dim=(*i)->getDim();
 		V2d stretch=(*i)->getStretch();

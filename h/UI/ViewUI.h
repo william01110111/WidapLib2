@@ -51,6 +51,8 @@ private:
 	//called after the rect is changed with setRect
 	virtual void rectChanged() {}
 	
+	virtual void activeChanged() {}
+	
 
 ///for subclasses to use
 
@@ -58,6 +60,7 @@ public:
 	
 	//calculate and sets the dimensions of a View, returns false if the dimensions were already set correctly
 	bool calcAndSetDim() {return setDim(calcDim());}
+	virtual bool calcAndSetDimRecursive() {return setDim(calcDim());}
 	
 protected:
 	
@@ -67,6 +70,8 @@ protected:
 ///internal
 
 public:
+	
+	virtual ~ViewUI() {}
 	
 	//sets the rect the view will be drawn in, also
 	void setRect(const V2d& lowIn, const V2d& hghIn);

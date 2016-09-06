@@ -12,7 +12,7 @@ ButtonViewUI::ButtonViewUI()
 	
 }
 
-void ButtonViewUI::setText(string textIn)
+void ButtonViewUI::setText(const string& textIn)
 {
 	text=textIn;
 	calcDim();
@@ -30,6 +30,12 @@ V2d ButtonViewUI::calcDim()
 
 void ButtonViewUI::draw()
 {
+	if (!surface)
+	{
+		err << "called ButtonViewUI::draw() called with null surface" << err;
+		return;
+	}
+	
 	V2d low=getLow(), hgh=getHgh();
 	
 	surface->rect(low, hgh, clicked?themeUI.buttonBkndSelect:themeUI.buttonBkndUnselect);
@@ -46,7 +52,7 @@ void ButtonViewUI::update()
 	{
 		clicked=true;
 		if (clickAction)
-			clickAction->execute();
+			clickAction();
 	}
 	else
 	{

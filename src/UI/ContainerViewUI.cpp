@@ -1,11 +1,21 @@
 #include "../../h/UI/ContainerViewUI.h"
 #include "../../h/Mscl/Error.h"
+#include "../../h/UI/ThemeUI.h"
 
 namespace widap
 {
 
 void ContainerViewUI::draw()
 {
+	if (!surface)
+	{
+		err << "ContainerViewUI::draw() called with no surface" << err;
+		return;
+	}
+	
+	if (drawDefaultBknd)
+		surface->rect(getLow(), getHgh(), themeUI.containerViewBknd);
+	
 	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
 		if ((*i)->getIfActive())
@@ -15,6 +25,12 @@ void ContainerViewUI::draw()
 
 void ContainerViewUI::update()
 {
+	if (!input)
+	{
+		err << "ContainerViewUI::update() called with no input soure" << err;\
+		return;
+	}
+	
 	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
 		if ((*i)->getIfActive())
@@ -24,6 +40,9 @@ void ContainerViewUI::update()
 
 void ContainerViewUI::addChildToList(ViewUI * childIn)
 {
+	if (!childIn)
+		return;
+	
 	children.push_back(childIn);
 	childIn->setIO(surface, input);
 	childIn->setActive(true);
@@ -32,7 +51,7 @@ void ContainerViewUI::addChildToList(ViewUI * childIn)
 	//thats right, I cast childIn to a type its not so I can get at a protected member of the base class
 	//You think thats one of the worst C++ hacks you've ever seen? Well, fuck you!
 	
-	childIn->calcAndSetDim();
+	childIn->calcAndSetDimRecursive();
 	
 	childChanged();
 }
@@ -57,7 +76,7 @@ void ContainerViewUI::removeChildFromList(ViewUI * childIn)
 		return;
 	}
 	
-	std::list<ViewUI*>::const_iterator i=children.end();
+	auto i=children.end();
 	--i;
 	
 	while ((*i)!=childIn)
@@ -76,10 +95,20 @@ void ContainerViewUI::removeChildFromList(ViewUI * childIn)
 
 void ContainerViewUI::ioChanged()
 {
-	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
+	for (auto i=children.begin(); i!=children.end(); i++)
 	{
 		(*i)->setIO(surface, input);
 	}
+}
+
+bool ContainerViewUI::calcAndSetDimRecursive()
+{
+	for (auto i=children.begin(); i!=children.end(); i++)
+	{
+		(*i)->calcAndSetDimRecursive();
+	}
+	
+	return setDim(calcDim());
 }
 
 }

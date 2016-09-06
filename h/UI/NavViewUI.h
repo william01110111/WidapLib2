@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ContainerViewUI.h"
-#include <list>
+
+#include <functional>
 
 namespace widap
 {
@@ -14,6 +15,10 @@ public:
 	
 	void pushView(ViewUI * viewIn);
 	void popView();
+	
+	std::function<void ()> pushViewLambda(ViewUI * in) {return [=]()->void{pushView(in);};}
+	std::function<void ()> popViewLambda() {return [this](){popView();};}
+	
 	virtual void update();
 	
 protected:

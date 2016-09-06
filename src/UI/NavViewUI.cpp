@@ -28,13 +28,12 @@ void NavViewUI::popView()
 
 void NavViewUI::update()
 {
-	ContainerViewUI::update();
-	
-	for (std::list<StackAction*>::const_iterator i=stackActions.begin(); i!=stackActions.end(); i++)
+	for (std::list<StackAction*>::iterator i=stackActions.begin(); i!=stackActions.end(); ++i)
 	{
 		if ((*i)->view) //push
 		{
-			(children.back())->setActive(false);
+			if (!children.empty())
+				children.back()->setActive(false);
 			addChildToList((*i)->view);
 		}
 		else //pop
@@ -51,15 +50,17 @@ void NavViewUI::update()
 				children.back()->setActive(true);
 		}
 		
-		delete (*i);
+		delete *i;
 	}
 	
 	stackActions.clear();
+	
+	ContainerViewUI::update();
 }
 
 void NavViewUI::setChildRects()
 {
-	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
+	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); ++i)
 	{
 		(*i)->setRect(getLow(), getHgh());
 	}

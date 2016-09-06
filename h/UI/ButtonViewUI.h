@@ -3,25 +3,28 @@
 #include "ViewUI.h"
 #include <string>
 
+#include <functional>
+using std::function;
+
+//#include "../Mscl/Action.h"
+
 namespace widap
 {
-
-class Action;
 
 class ButtonViewUI: public ViewUI
 {
 public:
 	
 	ButtonViewUI();
-	ButtonViewUI(string textIn) {ButtonViewUI(); setText(textIn);}
+	ButtonViewUI(const string& textIn) {ButtonViewUI(); setText(textIn);}
 	
 	void draw();
 	void update();
 	
-	void setText(string textIn);
+	void setText(const string& textIn);
 	string getText() {return text;}
 	
-	void setClickAction(Action * in) {clickAction=in;}
+	void setClickAction(function<void ()> in) {clickAction=in;}
 	
 	V2d calcDim();
 	
@@ -31,7 +34,7 @@ private:
 	string text;
 	bool clicked;
 	
-	Action * clickAction=nullptr;
+	function<void ()> clickAction;
 };
 
 }
