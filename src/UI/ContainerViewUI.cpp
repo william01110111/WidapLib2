@@ -5,36 +5,29 @@
 namespace widap
 {
 
-void ContainerViewUI::draw()
-{
-	if (!surface)
-	{
-		err << "ContainerViewUI::draw() called with no surface" << err;
-		return;
-	}
-	
-	if (drawDefaultBknd)
-		surface->rect(getLow(), getHgh(), themeUI.containerViewBknd);
-	
-	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
-	{
-		if ((*i)->getIfActive())
-			(*i)->draw();
-	}
-}
-
 void ContainerViewUI::update()
 {
-	if (!input)
-	{
-		err << "ContainerViewUI::update() called with no input soure" << err;\
-		return;
-	}
-	
 	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
 	{
 		if ((*i)->getIfActive())
 			(*i)->update();
+	}
+}
+
+void ContainerViewUI::drawBknd()
+{
+	surface->rect(getLow(), getHgh(), themeUI.containerViewBknd);
+}
+
+void ContainerViewUI::draw()
+{
+	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
+	{
+		if ((*i)->getIfActive())
+		{
+			(*i)->drawBknd();
+			(*i)->draw();
+		}
 	}
 }
 

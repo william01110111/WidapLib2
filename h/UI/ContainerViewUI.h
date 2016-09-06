@@ -14,8 +14,9 @@ class ContainerViewUI: public ViewUI
 
 public:
 	//be sure you call these in the functions that override them
-	virtual void draw();
 	virtual void update();
+	virtual void drawBknd();
+	virtual void draw();
 
 protected:
 	
@@ -32,9 +33,6 @@ protected:
 	virtual void addChildToList(ViewUI * childIn);
 	virtual void removeChildFromList(const std::list<ViewUI*>::const_iterator& i);
 	virtual void removeChildFromList(ViewUI * childIn);
-	
-	bool drawDefaultBknd=true; //if to draw a background of the default color
-	
 	
 ///internal
 

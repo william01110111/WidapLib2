@@ -38,6 +38,7 @@ public:
 public:
 	
 	//draws it to the surface inside the rectangle
+	virtual void drawBknd() {};
 	virtual void draw()=0;
 	
 	//updates input based on the input source inside the rectangle
