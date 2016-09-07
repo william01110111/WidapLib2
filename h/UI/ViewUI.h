@@ -42,7 +42,7 @@ public:
 	virtual void draw()=0;
 	
 	//updates input based on the input source inside the rectangle
-	virtual void update()=0;
+	virtual void update() {}
 	
 	//calculates and returns the dimensions of a view
 	virtual V2d calcDim();
@@ -52,7 +52,7 @@ private:
 	//called after the rect is changed with setRect
 	virtual void rectChanged() {}
 	
-	virtual void activeChanged() {}
+	virtual void activeChanged(bool active) {}
 	
 
 ///for subclasses to use

@@ -17,6 +17,8 @@ public:
 	
 	ClrRGBA buttonBkndUnselect, buttonBkndSelect;
 	TextStyle buttonTextUnselect, buttonTextSelect;
+	
+	TextStyle labelText[4];
 };
 
 extern ThemeUI themeUI;

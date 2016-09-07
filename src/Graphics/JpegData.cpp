@@ -40,7 +40,7 @@ void JpegData::fromImage(Image * img)
 	
 	tjCompress2(compressor, (unsigned char *)img->getData(), dim.x, 0, dim.y, TJPF_BGR, &data, &dataSize, TJSAMP_444, quality, TJFLAG_BOTTOMUP);
 	
-	err << "compressed jpeg to " << 100.0*dataSize/(img->getDim().area()*sizeof(ClrBGR)) << "% the original size" << err;
+	//err << "compressed jpeg to " << 100.0*dataSize/(img->getDim().area()*sizeof(ClrBGR)) << "% the original size" << err;
 }
 
 void JpegData::toImage(Image * img, bool makeEmptyAfter)

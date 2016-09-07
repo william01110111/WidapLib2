@@ -9,6 +9,7 @@ void ViewUI::setRect(const V2d& lowIn, const V2d& hghIn)
 {
 	low=lowIn;
 	hgh=hghIn;
+	setActive(true);
 	rectChanged();
 }
 
@@ -51,7 +52,7 @@ void ViewUI::setActive(bool in)
 		if (parent)
 			parent->childChanged();
 		
-		activeChanged();
+		activeChanged(in);
 	}
 }
 

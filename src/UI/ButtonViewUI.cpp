@@ -14,7 +14,7 @@ ButtonViewUI::ButtonViewUI()
 void ButtonViewUI::setText(const string& textIn)
 {
 	text=textIn;
-	calcDim();
+	calcAndSetDim();
 }
 
 V2d ButtonViewUI::calcDim()
