@@ -26,6 +26,8 @@ public:
 	void setAlign() { setChildRects();}
 	void setBuffer(V2d outer, double inner) {outerBuffer=outer; innerBuffer=inner; setChildRects();}
 	
+	V2d calcDim();
+	
 protected:
 	
 	void setChildRects();

@@ -27,7 +27,7 @@ public:
 
 typedef ClrBGR Clr; //make it a bit easier to type
 
-//inline ClrBGR clr(unsigned char r, unsigned char g, unsigned char b) {return Clr(r, g, b);}
+inline ClrBGR clr(unsigned char r, unsigned char g, unsigned char b) {return {r, g, b};}
 
 struct ClrRGBA
 {

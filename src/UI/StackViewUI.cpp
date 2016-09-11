@@ -18,6 +18,41 @@ inline T StackViewUI::mn(const V2<T>& in)
 	return h?in.y:in.x;
 }
 
+V2d StackViewUI::calcDim()
+{
+	double majorSize=0;
+	int majorStretchNum=0;
+	double minorSize=0;
+	int minorStretchNum=0;
+	
+	for (auto i=children.begin(); i!=children.end(); i++)
+	{
+		if (mj((*i)->getStretch()))
+			majorStretchNum++;
+		
+		majorSize+=mj((*i)->getDim());
+		majorSize+=innerBuffer;
+		
+		if (mn((*i)->getStretch()))
+			minorStretchNum++;
+		
+		minorSize=max(minorSize, mn((*i)->getDim()));
+	}
+	
+	majorSize-=innerBuffer;
+	
+	V2d dim;
+	
+	if (h)
+		dim=V2d(majorSize*(majorStretchNum>0?-1:1), minorSize*(minorStretchNum>0?-1:1));
+	else
+		dim=V2d(minorSize*(minorStretchNum>0?-1:1), majorSize*(majorStretchNum>0?-1:1));
+	
+	dim+=outerBuffer*2;
+	
+	return dim;
+}
+
 void StackViewUI::setChildRects()
 {
 	V2d low=outerBuffer+getLow(), hgh=-outerBuffer+getHgh();
@@ -88,8 +123,17 @@ void StackViewUI::setChildRects()
 			--i;
 		
 		double mjLow=0, mjHgh=0, mnLow=0, mnHgh=0;
-		double mnSize=mn((*i)->getDim());
+		double mnSize;
+		
+		if (mn((*i)->getStretch()))
+			mnSize=max(mn(hgh)-mn(low), mn((*i)->getDim()));
+		else
+			mnSize=mn((*i)->getDim());
+		
 		double mjSize=mj((*i)->getDim());
+		
+		if (mj((*i)->getStretch()))
+			mjSize+=((mj(hgh)-mj(low))-majorSize)/majorStretchNum;
 		
 		switch (minorAlign)
 		{
