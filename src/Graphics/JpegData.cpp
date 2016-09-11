@@ -36,7 +36,20 @@ void JpegData::fromImage(Image * img)
 {
 	makeEmpty();
 	
+	if (!img)
+	{
+		err << "JpegData::fromImage called with null image" << err;
+		return;
+	}
+	
+	if (img->isEmpty())
+	{
+		err << "JpegData::fromImage called with empty image" << err;
+		return;
+	}
+	
 	dim=img->getDim();
+		
 	
 	tjCompress2(compressor, (unsigned char *)img->getData(), dim.x, 0, dim.y, TJPF_BGR, &data, &dataSize, TJSAMP_444, quality, TJFLAG_BOTTOMUP);
 	

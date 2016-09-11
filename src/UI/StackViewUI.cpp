@@ -1,6 +1,7 @@
 
 #include "../../h/UI/StackViewUI.h"
 #include "../../h/Math/SimpMath.h"
+#include "../../h/Mscl/Error.h"
 
 namespace widap
 {
@@ -26,7 +27,7 @@ void StackViewUI::setChildRects()
 	{
 		for (auto i=children.begin(); i!=children.end(); i++)
 		{
-			(*i)->setActive(false);
+			(*i)->deactivate();
 		}
 		
 		return;

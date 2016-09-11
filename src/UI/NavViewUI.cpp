@@ -28,42 +28,52 @@ void NavViewUI::popView()
 
 void NavViewUI::update()
 {
-	for (std::list<StackAction*>::iterator i=stackActions.begin(); i!=stackActions.end(); ++i)
+	if (!stackActions.empty())
 	{
-		if ((*i)->view) //push
+		for (std::list<StackAction*>::iterator i=stackActions.begin(); i!=stackActions.end(); ++i)
 		{
-			if (!children.empty())
-				children.back()->setActive(false);
-			addChildToList((*i)->view);
-		}
-		else //pop
-		{
-			if (children.empty())
+			if ((*i)->view) //push
 			{
-				err << "nav view empty when trying to pop" << err;
-				return;
+				addChildToList((*i)->view);
+			}
+			else //pop
+			{
+				if (children.empty())
+				{
+					err << "nav view empty when trying to pop" << err;
+					return;
+				}
+				
+				removeChildFromList(children.back());
 			}
 			
-			removeChildFromList(children.back());
-			
-			if (!children.empty())
-				children.back()->setActive(true);
+			delete *i;
 		}
 		
-		delete *i;
+		stackActions.clear();
 	}
-	
-	stackActions.clear();
 	
 	ContainerViewUI::update();
 }
 
 void NavViewUI::setChildRects()
 {
-	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); ++i)
+	if (children.empty())
 	{
-		(*i)->setRect(getLow(), getHgh());
+		return;
 	}
+	
+	auto i=children.end();
+	i--;
+	
+	(*i)->setRect(getLow(), getHgh());
+	
+	while (i!=children.begin())
+	{
+		i--;
+		(*i)->deactivate();
+	}
+	
 }
 
 }

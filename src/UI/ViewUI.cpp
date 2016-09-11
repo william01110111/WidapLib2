@@ -1,6 +1,7 @@
 
 #include "../../h/UI/ViewUI.h"
 #include "../../h/UI/ContainerViewUI.h"
+#include "../../h/Mscl/Error.h"
 
 namespace widap
 {
@@ -35,7 +36,7 @@ bool ViewUI::setDim(const V2d& in)
 			}
 			else
 			{
-				setRect(V2d(), V2d());
+				deactivate();
 			}
 		}
 		
@@ -48,9 +49,6 @@ void ViewUI::setActive(bool in)
 	if (active!=in)
 	{
 		active=in;
-		
-		if (parent)
-			parent->childChanged();
 		
 		activeChanged(in);
 	}

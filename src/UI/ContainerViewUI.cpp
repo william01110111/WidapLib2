@@ -34,11 +34,25 @@ void ContainerViewUI::draw()
 void ContainerViewUI::addChildToList(ViewUI * childIn)
 {
 	if (!childIn)
+	{
+		err << "called ContainerViewUI::addChildToList with null childIn" << err;
 		return;
+	}
+		
+	
+	if (((ContainerViewUI*)childIn)->parent)
+	{
+		err << "sent ContainerViewUI::addChildToList a child that already had a parent" << err;
+		return;
+	}
+	
+	if (childIn->getIfActive())
+	{
+		err << "sent ContainerViewUI::addChildToList a child that is already active" << err;
+	}
 	
 	children.push_back(childIn);
 	childIn->setIO(surface, input);
-	childIn->setActive(true);
 	
 	((ContainerViewUI*)childIn)->parent=this;
 	//thats right, I cast childIn to a type its not so I can get at a protected member of the base class
@@ -47,11 +61,12 @@ void ContainerViewUI::addChildToList(ViewUI * childIn)
 	childIn->calcAndSetDimRecursive();
 	
 	childChanged();
+	
 }
 
 void ContainerViewUI::removeChildFromList(const std::list<ViewUI*>::const_iterator& i)
 {
-	(*i)->setActive(false);
+	(*i)->deactivate();
 	((ContainerViewUI*)(*i))->parent=nullptr;
 	(*i)->setIO(nullptr, nullptr);
 	(*i)->calcAndSetDim();

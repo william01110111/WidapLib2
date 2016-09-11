@@ -22,7 +22,6 @@ public:
 	void setWindow(WindowBase * windowIn) {setIO(windowIn, windowIn);}
 	
 	bool getIfActive() {return active;}
-	void setActive(bool in);
 	
 	//get the rect that this view is in
 	const V2d& getLow() {return low;}
@@ -61,7 +60,11 @@ public:
 	
 	//calculate and sets the dimensions of a View, returns false if the dimensions were already set correctly
 	bool calcAndSetDim() {return setDim(calcDim());}
+	
 	virtual bool calcAndSetDimRecursive() {return setDim(calcDim());}
+	
+	//deactivates a view, currently should only be called by the view's parent, view is reactivated whenever setRect is called
+	void deactivate() {setActive(false);}
 	
 protected:
 	
@@ -85,6 +88,8 @@ protected:
 	ContainerViewUI * parent=nullptr;
 	
 private:
+	
+	void setActive(bool in);
 	
 	//if this view will get input and be drawn
 	bool active=false;
