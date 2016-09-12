@@ -11,15 +11,7 @@ InputSource::InputSource()
 
 void InputSource::resetVars()
 {
-	mouseLocation.zero();
-	mouseLocDlta.zero();
-	mouseLClick=0;
-	mouseRClick=0;
-	mouseMClick=0;
-	mouseLDwn=0;
-	mouseRDwn=0;
-	mouseMDwn=0;
-	mouseScroll=0;
+	mouse=Mouse();
 	shiftDwnBool=0;
 	ctrlDwnBool=0;
 	altDwnBool=0;
@@ -28,6 +20,38 @@ void InputSource::resetVars()
 	keyPressListPos=0;
 }
 
+//set everything on a mouse button, should only be called exactly per cycle per button
+void InputSource::setMouseButton(Mouse::Button * btn, bool isDownIn)
+{
+	if (btn->_justDown)
+		btn->_justDown=false;
+	
+	if (btn->_justUp)
+		btn->_justUp=false;
+	
+	if (isDownIn!=btn->_isDown)
+	{
+		btn->_isDown=isDownIn;
+		
+		if (isDownIn)
+			btn->_justDown=true;
+		else
+			btn->_justUp=true;
+	}
+}
+
+//set the mouse position and delta, should be called exactly once per cycle
+void InputSource::setMousePos(V2d posIn)
+{
+	mouse._delta=posIn-mouse._pos;
+	mouse._pos=posIn;
+}
+
+//set the scroll, should be called exactly once per cycle
+void InputSource::setMouseScroll(double scrollIn)
+{
+	mouse._scroll=scrollIn;
+}
 
 char InputSource::nextKey()
 {

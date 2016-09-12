@@ -47,7 +47,7 @@ struct ClrRGBA
 	unsigned char a;
 };
 
-//inline ClrRGBA clr(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {return ClrRGBA(r, g, b, a);}
+inline ClrRGBA clr(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {return {r, g, b, a};}
 
 //ClrBGR::operator ClrRGBA() {return {r, g, b, 255};}
 

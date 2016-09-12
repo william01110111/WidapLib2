@@ -4,6 +4,7 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
 #include <math.h>
 
 namespace widap
@@ -111,6 +112,8 @@ public:
 	
 	template<typename U>
 	inline operator V2<U>() {return V2<U>(x, y);}
+	
+	inline operator std::string() {return std::string("(") + std::to_string(x) + " " + std::to_string(y) + ")";}
 	
 	inline operator bool() {return ((bool)x || (bool)y);}
 	

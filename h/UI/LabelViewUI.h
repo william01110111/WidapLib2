@@ -11,6 +11,8 @@ class LabelViewUI: public ViewUI
 {
 public:
 	
+	ThemeUI::Label theme=getThemeUI().label;
+	
 	LabelViewUI();
 	LabelViewUI(const string& textIn) {LabelViewUI(); setText(textIn);}
 	

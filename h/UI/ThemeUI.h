@@ -6,22 +6,41 @@
 namespace widap
 {
 
-class ThemeUI
+struct ThemeUI
 {
 public:
+	
+	struct Container
+	{
+		ClrRGBA bknd;
+		
+	} container;
+	
+	struct Stack
+	{
+		V2d outerBuffer;
+		double innerBuffer;
+		
+	} stack;
+	
+	struct Label
+	{
+		TextStyle text[4];
+		
+	} label;
+	
+	struct Button
+	{
+		ClrRGBA bkndUnselect, bkndSelect;
+		TextStyle textUnselect, textSelect;
+		V2d buffer;
+		
+	} button;
+	
 	ThemeUI();
-	
-	void theme0();
-	
-	ClrRGBA containerViewBknd;
-	
-	ClrRGBA buttonBkndUnselect, buttonBkndSelect;
-	TextStyle buttonTextUnselect, buttonTextSelect;
-	
-	TextStyle labelText[4];
 };
 
-extern ThemeUI themeUI;
+ThemeUI & getThemeUI();
 
 }
 

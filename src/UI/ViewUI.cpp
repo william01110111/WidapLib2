@@ -26,7 +26,7 @@ bool ViewUI::setDim(const V2d& in)
 		
 		if (parent)
 		{
-			parent->childChanged();
+			parent->contentsChanged();
 		}
 		else
 		{

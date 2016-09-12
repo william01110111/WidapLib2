@@ -5,6 +5,11 @@
 namespace widap
 {
 
+ContainerViewUI::ContainerViewUI()
+{
+	
+}
+
 void ContainerViewUI::update()
 {
 	for (std::list<ViewUI*>::const_iterator i=children.begin(); i!=children.end(); i++)
@@ -16,7 +21,7 @@ void ContainerViewUI::update()
 
 void ContainerViewUI::drawBknd()
 {
-	surface->rect(getLow(), getHgh(), themeUI.containerViewBknd);
+	surface->rect(getLow(), getHgh(), theme.bknd);
 }
 
 void ContainerViewUI::draw()
@@ -60,7 +65,7 @@ void ContainerViewUI::addChildToList(ViewUI * childIn)
 	
 	childIn->calcAndSetDimRecursive();
 	
-	childChanged();
+	contentsChanged();
 	
 }
 
@@ -69,11 +74,10 @@ void ContainerViewUI::removeChildFromList(const std::list<ViewUI*>::const_iterat
 	(*i)->deactivate();
 	((ContainerViewUI*)(*i))->parent=nullptr;
 	(*i)->setIO(nullptr, nullptr);
-	(*i)->calcAndSetDim();
 	
 	children.erase(i);
 	
-	childChanged();
+	contentsChanged();
 }
 
 void ContainerViewUI::removeChildFromList(ViewUI * childIn)

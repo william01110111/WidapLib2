@@ -14,14 +14,14 @@ LabelViewUI::LabelViewUI()
 void LabelViewUI::setText(const string& textIn)
 {
 	text=textIn;
-	calcDim();
+	contentsChanged();
 }
 
 V2d LabelViewUI::calcDim()
 {	
 	if (surface)
 	{
-		return surface->text()->getBounds(text, themeUI.labelText[style].height);
+		return surface->text()->getBounds(text, theme.text[style].height);
 	}
 	else
 		return V2d();
@@ -37,7 +37,7 @@ void LabelViewUI::setStyle(int in)
 	}
 	
 	style=in;
-	calcAndSetDim();
+	contentsChanged();
 }
 
 void LabelViewUI::draw()
@@ -50,7 +50,7 @@ void LabelViewUI::draw()
 	
 	V2d low=getLow(), hgh=getHgh();
 	
-	surface->text()->setStyle(themeUI.labelText[style]);
+	surface->text()->setStyle(theme.text[style]);
 	surface->text()->setPos(low, hgh, TextBase::CENTER_X, TextBase::CENTER_Y, TextBase::SHRINK_TO_BOUNDS);
 	surface->text()->draw(text);
 }

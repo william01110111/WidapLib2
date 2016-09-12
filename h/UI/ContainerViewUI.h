@@ -38,10 +38,19 @@ protected:
 
 public:
 	
-	void childChanged()
+	ThemeUI::Container theme=getThemeUI().container;
+	
+	ContainerViewUI();
+	
+	bool contentsChanged()
 	{
-		if (!calcAndSetDim())
+		if (!setDim(calcDim()))
+		{
 			setChildRects();
+			return false;
+		}
+		else
+			return true;
 	}
 	
 protected:

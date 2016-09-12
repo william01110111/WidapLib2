@@ -18,6 +18,11 @@ inline T StackViewUI::mn(const V2<T>& in)
 	return h?in.y:in.x;
 }
 
+StackViewUI::StackViewUI()
+{
+	
+}
+
 V2d StackViewUI::calcDim()
 {
 	double majorSize=0;
@@ -31,7 +36,7 @@ V2d StackViewUI::calcDim()
 			majorStretchNum++;
 		
 		majorSize+=mj((*i)->getDim());
-		majorSize+=innerBuffer;
+		majorSize+=theme.innerBuffer;
 		
 		if (mn((*i)->getStretch()))
 			minorStretchNum++;
@@ -39,7 +44,7 @@ V2d StackViewUI::calcDim()
 		minorSize=max(minorSize, mn((*i)->getDim()));
 	}
 	
-	majorSize-=innerBuffer;
+	majorSize-=theme.innerBuffer;
 	
 	V2d dim;
 	
@@ -48,14 +53,14 @@ V2d StackViewUI::calcDim()
 	else
 		dim=V2d(minorSize*(minorStretchNum>0?-1:1), majorSize*(majorStretchNum>0?-1:1));
 	
-	dim+=outerBuffer*2;
+	dim+=theme.outerBuffer*2;
 	
 	return dim;
 }
 
 void StackViewUI::setChildRects()
 {
-	V2d low=outerBuffer+getLow(), hgh=-outerBuffer+getHgh();
+	V2d low=theme.outerBuffer+getLow(), hgh=-theme.outerBuffer+getHgh();
 	
 	//if there is not enough room for anything, deactivate all views and return
 	if (hgh.x<low.x || hgh.y<low.y)
@@ -77,10 +82,10 @@ void StackViewUI::setChildRects()
 			majorStretchNum++;
 		
 		majorSize+=mj((*i)->getDim());
-		majorSize+=innerBuffer;
+		majorSize+=theme.innerBuffer;
 	}
 	
-	majorSize-=innerBuffer;
+	majorSize-=theme.innerBuffer;
 	
 	double mjPos=0;
 		
@@ -165,7 +170,7 @@ void StackViewUI::setChildRects()
 		
 		mjHgh=mjPos;
 		
-		mjPos+=innerBuffer;
+		mjPos+=theme.innerBuffer;
 		
 		if (h)
 			(*i)->setRect(V2d(mjLow, mnLow), V2d(mjHgh, mnHgh));

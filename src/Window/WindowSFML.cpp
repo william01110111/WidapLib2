@@ -174,11 +174,8 @@ void WindowSFML::updateInput()
 	keyPressListPos=0;
 	keyPressNum=0;
 	
-	mouseLClick=0;
-	mouseRClick=0;
-	mouseMClick=0;
-	
-	mouseScroll=0;
+	bool lDwn=0, rDwn=0, mDwn=0;
+	double scroll=0;
 	
 	while (windowObj.pollEvent(event))
 	{
@@ -206,15 +203,15 @@ void WindowSFML::updateInput()
 			switch (event.mouseButton.button)
 			{
 			case sf::Mouse::Left:
-				mouseLClick=1;
+				lDwn=1;
 				break;
 				
 			case sf::Mouse::Right:
-				mouseRClick=1;
+				rDwn=1;
 				break;
 				
 			case sf::Mouse::Middle:
-				mouseMClick=1;
+				mDwn=1;
 				break;
 			
 			default:
@@ -223,7 +220,7 @@ void WindowSFML::updateInput()
 			break;
 		
 		case sf::Event::MouseWheelMoved:
-			mouseScroll+=event.mouseWheel.delta;
+			scroll+=event.mouseWheel.delta;
 			break;
 			
 		case sf::Event::Resized:
@@ -244,22 +241,29 @@ void WindowSFML::updateInput()
 		}
 	}
 	
-	sf::Vector2i mouseVctr=sf::Mouse::getPosition(windowObj);
+	auto mouseVctr=sf::Mouse::getPosition(windowObj);
 	
 	shiftDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
 	ctrlDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
 	altDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) || sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt);
 	superDwnBool=sf::Keyboard::isKeyPressed(sf::Keyboard::RSystem) || sf::Keyboard::isKeyPressed(sf::Keyboard::RSystem);
 	
-	mouseLDwn=sf::Mouse::isButtonPressed(sf::Mouse::Left);
-	mouseRDwn=sf::Mouse::isButtonPressed(sf::Mouse::Right);
-	mouseMDwn=sf::Mouse::isButtonPressed(sf::Mouse::Middle);
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		lDwn=true;
 	
-	mouseLocDlta.x=mouseVctr.x-mouseLocation.x;
-	mouseLocDlta.y=dim.y-mouseVctr.y-mouseLocation.y;
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		rDwn=true;
+		
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+		mDwn=true;
 	
-	mouseLocation.x=mouseVctr.x;
-	mouseLocation.y=dim.y-mouseVctr.y;
+	setMouseButton(&mouse.left, lDwn);
+	setMouseButton(&mouse.right, rDwn);
+	setMouseButton(&mouse.middle, mDwn);
+	
+	setMousePos(V2d(mouseVctr.x, dim.y-mouseVctr.y));
+	
+	setMouseScroll(scroll);
 	
 	dltaTime=dltaTimer.get();
 	dltaTimer.reset();
@@ -277,6 +281,8 @@ void WindowSFML::hasBeenResized()
 	//stop view from scaling with the window
 	
 	windowObj.setView(sf::View(sf::FloatRect(0, 0, dim.x, dim.y)));
+	
+	//clear(clr(255, 255, 255));
 }
 
 

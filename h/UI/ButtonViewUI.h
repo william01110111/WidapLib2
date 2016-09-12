@@ -13,6 +13,8 @@ class ButtonViewUI: public ViewUI
 {
 public:
 	
+	ThemeUI::Button theme=getThemeUI().button;
+	
 	ButtonViewUI();
 	ButtonViewUI(const string& textIn) {ButtonViewUI(); setText(textIn);}
 	

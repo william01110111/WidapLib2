@@ -4,6 +4,7 @@
 #include "../Graphics/Surface.h"
 #include "../Window/InputSource.h"
 #include "../Window/WindowBase.h"
+#include "ThemeUI.h"
 
 namespace widap
 {
@@ -59,7 +60,7 @@ private:
 public:
 	
 	//calculate and sets the dimensions of a View, returns false if the dimensions were already set correctly
-	bool calcAndSetDim() {return setDim(calcDim());}
+	virtual bool contentsChanged() {return setDim(calcDim());}
 	
 	virtual bool calcAndSetDimRecursive() {return setDim(calcDim());}
 	
