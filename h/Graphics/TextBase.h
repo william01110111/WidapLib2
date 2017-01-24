@@ -73,16 +73,14 @@ public:
 	
 	template <typename T> void setDrawClr(T clrIn, double alphaIn=1)
 	{
-		drawAlpha=alphaIn;
 		delete drawClr;
-		drawClr=new ClrType<T>(clrIn);
+		drawClr=new ClrType<T>(clrIn, alphaIn);
 	}
 	
 	template <typename T> void setBkndClr(T clrIn, double alphaIn=1)
 	{
-		bkndAlpha=alphaIn;
 		delete bkndClr;
-		bkndClr=new ClrType<T>(clrIn);
+		bkndClr=new ClrType<T>(clrIn, alphaIn);
 	}
 	
 	void draw(const string& s);
@@ -91,10 +89,13 @@ public:
 	{
 		cDim=V2d(heightIn*widthRateo, heightIn);
 		drawBold=boldIn;
-		drawAlpha=alphaIn;
 		delete drawClr;
-		drawClr=new ClrType<T>(clrIn);
-		bkndAlpha=0;
+		drawClr=new ClrType<T>(clrIn, alphaIn);
+		if (bkndClr->alpha!=0)
+		{
+			delete bkndClr;
+			bkndClr=new ClrType<bool>(false, 0);
+		}
 	}
 	
 	void setStyle(const TextStyle& style);
@@ -190,6 +191,7 @@ private:
 	public:
 		virtual void setDrawClr(Surface * surface)=0;
 		virtual ~ClrTypeBase() {}
+		double alpha;
 	};
 	
 	//this class stores any type to use as a color
@@ -197,7 +199,7 @@ private:
 	class ClrType : public ClrTypeBase
 	{
 	public:
-		ClrType(T in) {data=in;}
+		ClrType(T in, double alphaIn) {data=in; alpha=alphaIn;}
 		void setDrawClr(Surface * surface);
 		T data;
 	};
@@ -205,7 +207,6 @@ private:
 protected:
 	
 	ClrTypeBase * drawClr, * bkndClr;
-	double drawAlpha, bkndAlpha;
 };
 
 }

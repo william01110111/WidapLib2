@@ -307,21 +307,18 @@ void WindowSFML::set(int x, int y)
 void WindowSFML::setDrawClr(bool clrIn)
 {
 	drawClr=toBGR(clrIn);
-	drawAlpha=1;
 }
 
 //set the draw color with an unsigned char
 void WindowSFML::setDrawClr(unsigned char clrIn)
 {
 	drawClr=toBGR(clrIn);
-	drawAlpha=1;
 }
 
 //set the draw color with an int (usually the lowest few numbers will be standard template colors, and anything higher will be the same as 0)
 void WindowSFML::setDrawClr(int clrIn)
 {
 	drawClr=toBGR(clrIn);
-	drawAlpha=1;
 }
 
 //set the draw color with a ClrRGBA value
@@ -335,14 +332,12 @@ void WindowSFML::setDrawClr(ClrRGBA clrIn)
 void WindowSFML::setDrawClr(ClrBGR clrIn)
 {
 	drawClr=clrIn;
-	drawAlpha=1;
 }
 
 //set the draw color with a ClrHSL value
 void WindowSFML::setDrawClr(ClrHSL clrIn)
 {
 	drawClr=toClr(clrIn);
-	drawAlpha=1;
 }
 
 

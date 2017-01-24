@@ -10,6 +10,8 @@ struct ThemeUI
 {
 public:
 	
+	double scale;
+	
 	struct Container
 	{
 		ClrRGBA bknd;

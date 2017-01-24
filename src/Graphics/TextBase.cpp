@@ -11,10 +11,8 @@ TextBase::TextBase(Surface * surfaceIn)
 {
 	surface=surfaceIn;
 	setHeight(12);
-	drawClr=new ClrType<bool>(1);
-	bkndClr=new ClrType<bool>(0);
-	drawAlpha=1.0;
-	bkndAlpha=0.0;
+	drawClr=new ClrType<bool>(true, 1.0);
+	bkndClr=new ClrType<bool>(false, 0.0);
 }
 
 TextBase::~TextBase()
@@ -47,14 +45,12 @@ void TextBase::setStyle(const TextStyle& style)
 {
 	cDim=V2d(style.height*widthRateo, style.height);
 	drawBold=style.bold;
-	drawAlpha=style.alpha;
 	delete drawClr;
-	drawClr=new ClrType<Clr>(style.color);
-	if (style.bkndAlpha>0)
+	drawClr=new ClrType<Clr>(style.color, style.alpha);
+	if (style.bkndAlpha>0 || bkndClr->alpha!=0)
 	{
 		delete bkndClr;
-		bkndAlpha=style.bkndAlpha;
-		bkndClr=new ClrType<Clr>(style.bkndColor);
+		bkndClr=new ClrType<Clr>(style.bkndColor, style.bkndAlpha);
 	}
 }
 
@@ -245,7 +241,10 @@ void TextBase::draw(const string& s)
 	}
 }
 
-template <typename T> void TextBase::ClrType<T>::setDrawClr(Surface * surface) {surface->setDrawClr(data);}
+template <typename T> void TextBase::ClrType<T>::setDrawClr(Surface * surface)
+{
+	surface->setDrawClr(data, alpha);
+}
 
 template class TextBase::ClrType<bool>;
 template class TextBase::ClrType<int>;

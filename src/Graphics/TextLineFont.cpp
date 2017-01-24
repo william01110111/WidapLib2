@@ -1725,11 +1725,9 @@ TextLineFont::TextLineFont(Surface * surfaceIn): TextBase(surfaceIn)
 
 void TextLineFont::renderGlyph(char c)
 {
-	if (bkndAlpha>0.0)
+	if (bkndClr->alpha>0.0)
 	{
 		bkndClr->setDrawClr(surface);
-		if (bkndAlpha!=1)
-			surface->setDrawAlpha(bkndAlpha);
 		
 		surface->rect(V2d(pos.x, pos.y-cDim.y), V2d(pos.x+cDim.x, pos.y));
 	}
@@ -1749,8 +1747,6 @@ void TextLineFont::renderGlyph(char c)
 		lineThick=max(cDim.y*LINE_THICKNESS_RATEO, 1.0);
 	
 	drawClr->setDrawClr(surface);
-	if (drawAlpha!=1)
-		surface->setDrawAlpha(drawAlpha);
 	
 	for (int j=0; j<fontData[(int)c].lineNum; ++j)
 		surface->line(floor(fontData[(int)c].lines[0][j]*glyphDim+loc), floor(fontData[(int)c].lines[1][j]*glyphDim+loc), lineThick);
